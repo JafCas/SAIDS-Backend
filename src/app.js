@@ -21,9 +21,26 @@ module.exports = app;
 
 // Supports ES6
 // import { create, Whatsapp } from 'venom-bot';
+
+/*const express = require("express");
+const cors = require("cors");
+const app = express(); //Es el servidor
+
 const uuid = require("uuid");
 const venom = require("venom-bot");
 const dialogflow = require("./dialogflow");
+
+//settings **Configuracion del servidor
+app.set("port", process.env.PORT || 4000);
+
+app.use(cors()); //Permite que dos servidores intercambien datos
+app.use(express.json()); //Envia archivos en formato json
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/webhook", function (req, res) {
+  res.sendStatus(200);
+  console.log("req =>", req.body);
+});
 
 const sessionIds = new Map();
 
@@ -71,3 +88,21 @@ async function setSessionAndUser(senderId) {
     throw error;
   }
 }
+*/
+
+const express = require("express");
+const app = express();
+const twilio = require("./twilio");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/webhook", function (req, res) {
+  console.log("req ->", req.body);
+  twilio.sendTextMessage(req.body.WaId, req.body.Body);
+  res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
+});
+
+app.listen(3000, () => {
+  console.log("servidor montado en el puerto 3000");
+});
