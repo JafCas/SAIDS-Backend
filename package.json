@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JafCas/SAIDS-Backend#readme",
   "dependencies": {
+    "axios": "^0.23.0",
     "cors": "^2.8.5",
     "dialogflow": "^1.2.0",
     "dotenv": "^10.0.0",
