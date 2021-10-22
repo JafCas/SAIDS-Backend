@@ -1,9 +1,9 @@
 const PdfPrinter = require ("pdfmake");
 const fs = require("fs");
 
-const fonts = require("./fonts");
-const styles = require("./styles");
-const {content} = require("./pdfContent");
+const fonts = require("./components/fonts");
+const styles = require("./components/styles");
+const {content} = require("./components/pdfContent");
 
 let docDefinition = {
     content: content,
@@ -11,7 +11,7 @@ let docDefinition = {
 };
 
 const printer = new PdfPrinter(fonts);
-const fileName = "hola"
+const fileName = "hola2"
 
 let pdfDoc = printer.createPdfKitDocument(docDefinition);
 //pdfDoc.pipe(fs.createWriteStream("./pdfTest.pdf"));
