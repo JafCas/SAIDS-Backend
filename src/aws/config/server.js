@@ -17,6 +17,7 @@ class Server {
   }
 
   setTemplateEngine() {
+    this.app.set("views", "./src/aws/views")
     this.app.set("view engine", "hbs");
 
     this.app.engine(
