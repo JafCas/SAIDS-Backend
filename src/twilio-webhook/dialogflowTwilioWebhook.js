@@ -28,28 +28,97 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   //TODO: Se guarda en memoria pero se tiene que mover a base de datos
   let payload = await dialogflow.sendToDialogFlow(receivedMessage, session);
   let responses = payload.fulfillmentMessages;
-  for (const response of responses) {
-    //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
-  }
 
   let docDefinition = {
     content: [
       {
-        text: "This is a header, using header style.",
+        text: "Leonel Jafet Castillo Martinez\n 23 años",
         style: "header",
+        margin: [100, 50, 0, 20],
       },
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. At eveniet animi saepe facilis, aliquid explicabo perspiciatis natus, aspernatur ullam nihil eius numquam, culpa laboriosam asperiores voluptates unde. Architecto, corporis iste?\n\n",
-      { text: "Subheader 1: subheader style", style: "subheader" },
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere ad reprehenderit reiciendis quos veritatis perspiciatis odio sint natus. Nisi dicta adipisci dolor rem quas mollitia, quam delectus cum nesciunt! Veritatis.",
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum recusandae eius, repudiandae magni cum libero quisquam delectus! Eveniet quo et in, magnam, quia omnis temporibus explicabo porro quas, vel consectetur.\n\n",
       {
-        text: "This will be a footer, which will be written in small font size",
-        //style: "quote", "small",
-        style: "small"
+          alignment: 'center',
+          columns: [
+              {
+                  text: 'No. telefonico:',
+              },
+              {
+                  text: 'email:'
+              },
+          ]
+      },
+      {
+          alignment: 'center',
+          columns: [
+              {
+                  text: messageComesFromPhone,
+              },
+              {
+                  text: 'correo@dominio.com'
+              },
+          ]
+      },
+      {
+        text: "\nFecha de participación: dd/mm/aaaa\n\n",
+        margin: [50,0,0,0]
+      },
+      {
+        text: "Resultados de preguntas filtro",
+        style: "subheader",
+      },
+      {
+        alignment: 'justify',
+        columns: [
+          {
+            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
+          },
+          {
+            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
+          }
+        ]
+      },
+      "\n",
+    /*{
+        text: "#5518387942\n\n",
+        style: "subheader",
+      },*/
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.\n\n",
+      {
+        text: "Subheader 2 - using subheader style",
+        style: "subheader",
+      },
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.\n\n",
+      {
+        text: "It is possible to apply multiple styles, by passing an array. This paragraph uses two styles: quote and small. When multiple styles are provided, they are evaluated in the specified order which is important in case they define the same properties",
+        style: ["quote", "small"],
       },
     ],
-    styles: styles
+    styles: {
+      header: {
+        fontSize: 16,
+        bold: true,
+      },
+      subheader: {
+        fontSize: 15,
+        bold: true,
+      },
+      quote: {
+        italics: true,
+      },
+      small: {
+        fontSize: 8,
+      },
+    },
+    defaultStyle: {
+      columnGap: 20
+    }
 };
+
+for (const response of responses) {
+  //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
+}
 
 const printer = new PdfPrinter(fonts);
 const fileName = messageComesFromPhone;
