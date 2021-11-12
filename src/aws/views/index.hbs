@@ -21,7 +21,11 @@
         <form>
           <div class="form-group">
             <label for="buckets">Buckets</label>
-            <select name="buckets" id="buckets" class="form-control"></select>
+            <select name="buckets" id="buckets" class="form-control">
+              {{#each buckets}}
+              <option value="{{this.Name}}">{{this.Name}}</option>
+              {{/each}}
+            </select>
           </div>
           <div class="form-group">
             <label for="file">File</label>
@@ -47,16 +51,17 @@
           </tr>
           <tr>
             <td>
-              <img src="img/no-available.png" alt="no-image" id="image" width="150" height="100">
+              <img src="img/Logo.png" alt="no-image" id="image" width="150" height="100">
             </td>
             <td>
-              <button class="btn btn-primary">
+              <a href="#" class="btn btn-primary" id="link">
                 Download
-              </button>
+              </a>
             </td>
           </tr>
         </table>
       </div>
     </div>
+    <script src="js/upload.js"></script>
   </body>
 </html>

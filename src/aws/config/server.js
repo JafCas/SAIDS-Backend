@@ -5,6 +5,7 @@ const exphbs = require("express-handlebars");
 const fileUpload = require("express-fileupload");
 
 class Server {
+
   constructor() {
     this.app = express();
     this.port = process.env.AWS_PORT || "5303";
@@ -14,10 +15,11 @@ class Server {
     this.middlewares();
 
     this.routes();
+
   }
 
   setTemplateEngine() {
-    this.app.set("views", "./src/aws/views")
+    this.app.set("views", "./src/aws/views");
     this.app.set("view engine", "hbs");
 
     this.app.engine(
@@ -31,7 +33,7 @@ class Server {
   }
 
   middlewares() {
-    this.app.use(express.static("public"));
+    this.app.use(express.static("./src/aws/public"));
     this.app.use(express.json());
 
     this.app.use(
@@ -44,8 +46,8 @@ class Server {
   }
 
   routes() {
-    this.app.use("/index", require("../routes/index.routes"))
-    this.app.use("/upload", require("../routes/upload.routes"))
+    this.app.use("/index", require("../routes/index.routes"));
+    this.app.use("/upload", require("../routes/upload.routes"));
   }
 
   listen() {
