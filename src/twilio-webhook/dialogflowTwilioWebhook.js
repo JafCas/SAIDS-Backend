@@ -12,6 +12,8 @@ const fs = require("fs");
 const fonts = require("./pdf/components/fonts");
 const styles = require("./pdf/components/styles");
 const {content} = require("./pdf/components/pdfContent");
+const {sendToDialogFlow} = require("./src/dialogflow");
+const {testIntent} = require("./src/dialogflow");
 
 const sessionIds = new Map();
 
@@ -125,7 +127,9 @@ for (const response of responses) {
 
 const printer = new PdfPrinter(fonts);
 const fileName = messageComesFromPhone;
-console.log("nombre archivo: ", fileName)
+console.log("nombre archivo: ", fileName);
+//var testVariable = test;
+console.log("Intent que se ve desde DTW: ", testIntent);
 let pdfDoc = printer.createPdfKitDocument(docDefinition);
 pdfDoc.pipe(fs.createWriteStream("./createdFiles/"+fileName+".pdf"));
 pdfDoc.end();

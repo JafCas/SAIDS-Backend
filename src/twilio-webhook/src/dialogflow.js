@@ -1,6 +1,6 @@
 /*
-* AQUI SE HACE LA INTERACCIÓN TWILIO-DIALOGFLOW
-*/
+ * AQUI SE HACE LA INTERACCIÓN TWILIO-DIALOGFLOW
+ */
 const dialogflow = require("dialogflow");
 const config = require("./config");
 
@@ -13,6 +13,8 @@ const sessionClient = new dialogflow.SessionsClient({
   projectId: config.GOOGLE_PROJECT_ID,
   credentials,
 });
+
+var testIntent = "Hola";
 
 /**
  * Send a query to the dialogflow agent, and return the query result.
@@ -42,7 +44,16 @@ async function sendToDialogFlow(msg, session, params) {
     };
     const responses = await sessionClient.detectIntent(request);
     const result = responses[0].queryResult;
-    //console.log("INTENT EMPAREJADO: ", result.intent.displayName);
+    let intentEmparejado = result.intent.displayName;
+    console.log("INTENT EMPAREJADO: ", intentEmparejado);
+
+    //Si el webhook al que se llegó es el deseado se ejecuta algo
+    if (intentEmparejado === "webhookDemo") {
+      testIntent = intentEmparejado;
+      console.log("[Dialogflow] Todo bien");
+      console.log("test: ", testIntent);
+    } else {console.log('nada por aca')}
+
     let defaultResponses = [];
     if (result.action !== "input.unknown") {
       result.fulfillmentMessages.forEach((element) => {});
@@ -64,6 +75,9 @@ async function sendToDialogFlow(msg, session, params) {
   }
 }
 
+
+
 module.exports = {
   sendToDialogFlow,
+  testIntent,
 };
