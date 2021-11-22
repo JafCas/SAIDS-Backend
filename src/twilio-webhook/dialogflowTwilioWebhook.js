@@ -6,14 +6,20 @@ const dialogflowTwilioWebhook = express();
 const twilio = require("./src/twilio");
 const dialogflow = require("./src/dialogflow");
 const uuid = require("uuid");
-const PdfPrinter = require ("pdfmake");
+const PdfPrinter = require("pdfmake");
 const fs = require("fs");
+
+//De AWS
+const S3 = require("aws-sdk/clients/s3");
+const region = process.env.AWS_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
 
 const fonts = require("./pdf/components/fonts");
 const styles = require("./pdf/components/styles");
-const {content} = require("./pdf/components/pdfContent");
-const {sendToDialogFlow} = require("./src/dialogflow");
-const {testIntent} = require("./src/dialogflow");
+const { content } = require("./pdf/components/pdfContent");
+const { sendToDialogFlow } = require("./src/dialogflow");
+const { testIntent } = require("./src/dialogflow");
 
 const sessionIds = new Map();
 
@@ -22,6 +28,23 @@ dialogflowTwilioWebhook.use(express.urlencoded({ extended: true }));
 dialogflowTwilioWebhook.get("/", function (req, res) {
   res.send("Webhook workin'");
 });
+
+const storage = new S3({
+  region,
+  accessKeyId,
+  secretAccessKey,
+});
+
+/*const uploadBucket = (bucketName, file) => {
+  const params = {
+      Bucket: bucketName,
+      //Bucket: "test-files-node",
+      Key: file,
+      //Key: "texttest.txt",
+      Body: "hello world"
+  };
+  return storage.upload(params).promise();
+}*/
 
 dialogflowTwilioWebhook.post("/", async function (req, res) {
   console.log("[dialogflowTwilioWebhook] req ->", req.body);
@@ -42,48 +65,48 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         margin: [100, 50, 0, 20],
       },
       {
-          alignment: 'center',
-          columns: [
-              {
-                  text: 'No. telefonico:',
-              },
-              {
-                  text: 'email:'
-              },
-          ]
+        alignment: "center",
+        columns: [
+          {
+            text: "No. telefonico:",
+          },
+          {
+            text: "email:",
+          },
+        ],
       },
       {
-          alignment: 'center',
-          columns: [
-              {
-                  text: messageComesFromPhone,
-              },
-              {
-                  text: 'correo@dominio.com'
-              },
-          ]
+        alignment: "center",
+        columns: [
+          {
+            text: messageComesFromPhone,
+          },
+          {
+            text: "correo@dominio.com",
+          },
+        ],
       },
       {
         text: "\nFecha de participación: dd/mm/aaaa\n\n",
-        margin: [50,0,0,0]
+        margin: [50, 0, 0, 0],
       },
       {
         text: "Resultados de preguntas filtro",
         style: "subheader",
       },
       {
-        alignment: 'justify',
+        alignment: "justify",
         columns: [
           {
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
+            text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.",
           },
           {
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
-          }
-        ]
+            text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.",
+          },
+        ],
       },
       "\n",
-    /*{
+      /*{
         text: "#5518387942\n\n",
         style: "subheader",
       },*/
@@ -117,29 +140,52 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       },
     },
     defaultStyle: {
-      columnGap: 20
-    }
-};
+      columnGap: 20,
+    },
+  };
 
-for (const response of responses) {
-  //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
-}
+  for (const response of responses) {
+    //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
+  }
 
-//Recibe valor del intent emparejado
-var intentEmparejado = process.env.INTENT_EMPAREJADO;
-console.log("[dialogflowTwilioWebhook] Intent que se ve desde DTW: ", intentEmparejado);
-if (intentEmparejado === "webhookDemo") {
-  //
-  const printer = new PdfPrinter(fonts);
-  const fileName = messageComesFromPhone;
-  console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
-  let pdfDoc = printer.createPdfKitDocument(docDefinition);
-  //let fileName = ["./createdFiles/", ]
-  let nombreArchivo = "./createdFiles/"+fileName+".pdf";
-  pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
-  pdfDoc.end();
-  process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
-}
+  //Recibe valor del intent emparejado
+  var intentEmparejado = process.env.INTENT_EMPAREJADO;
+  console.log(
+    "[dialogflowTwilioWebhook] Intent que se ve desde DTW: ",
+    intentEmparejado
+  );
+  if (intentEmparejado === "webhookDemo") {
+    //
+    const printer = new PdfPrinter(fonts);
+    const fileName = messageComesFromPhone;
+    console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
+    let pdfDoc = printer.createPdfKitDocument(docDefinition);
+    //let fileName = ["./createdFiles/", ]
+    let nombreArchivo = "./createdFiles/" + fileName + ".pdf";
+    let nombreCorto = [fileName, ".pdf"];
+    nombreCorto = nombreCorto.join("");
+    console.log("[DTW] nombre archivo: ", nombreCorto);
+    pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
+    pdfDoc.end();
+    process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
+
+    const uploadBucket = (bucketName, file) => {
+      const stream = fs.createReadStream(nombreArchivo);
+      const params = {
+        Bucket: bucketName,
+        //Bucket: "test-files-node",
+        Key: file,
+        //Key: "texttest.txt",
+        Body: stream,
+      };
+      return storage.upload(params).promise();
+    };
+
+    //Sube al bucket de S3 el archivo
+    let bucket = "test-files-node";
+    let file = nombreCorto;
+    uploadBucket(bucket, file);
+  }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
 });
@@ -153,7 +199,6 @@ async function setSessionAndUser(senderId) {
     throw error;
   }
 }
-console.log("[dialogflowTwilioWebhook] Twilio Webhook Workin'")
+console.log("[dialogflowTwilioWebhook] Twilio Webhook Workin'");
 
 module.exports = dialogflowTwilioWebhook;
-

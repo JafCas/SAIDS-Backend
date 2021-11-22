@@ -7,7 +7,7 @@ const upload = async (req, res) => {
     const result = await uploadBucket(bucket, file);
     console.log("[upload.controller] test");
 
-    res.json(result);
+    res.json("[upload.controller: ]", result);
 };
 
 module.exports = {

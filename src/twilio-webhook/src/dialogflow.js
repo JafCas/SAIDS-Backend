@@ -53,7 +53,10 @@ async function sendToDialogFlow(msg, session, params) {
       process.env.INTENT_EMPAREJADO = intentEmparejado;
       console.log("[Dialogflow] Todo bien");
       console.log("test: ", testIntent);
-    } else {console.log('nada por aca'); process.env.INTENT_EMPAREJADO = "";}
+    } else {
+      console.log("nada por aca");
+      process.env.INTENT_EMPAREJADO = "";
+    }
 
     let defaultResponses = [];
     if (result.action !== "input.unknown") {
@@ -75,8 +78,6 @@ async function sendToDialogFlow(msg, session, params) {
     console.log(e);
   }
 }
-
-
 
 module.exports = {
   sendToDialogFlow,

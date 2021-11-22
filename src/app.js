@@ -25,6 +25,5 @@ app.use('/api/users', require('./routes/users'))
 app.use('/api/records', require('./routes/records'))
 app.use('/webhook', require('./twilio-webhook/dialogflowTwilioWebhook'))
 app.use('/dialogflow-fulfillment', require('./dialogflow-fulfillment/webhook'))
-//app.use('/awsBucket', require('./awsBucket'))
 
 module.exports = app;
