@@ -3,6 +3,11 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
+const Server = require("./aws/config/server");
+const app_aws = new Server();
+
+app_aws.listen();
+
 const axios = require("axios");
 
 app.use(express.json());
@@ -20,5 +25,6 @@ app.use('/api/users', require('./routes/users'))
 app.use('/api/records', require('./routes/records'))
 app.use('/webhook', require('./twilio-webhook/dialogflowTwilioWebhook'))
 app.use('/dialogflow-fulfillment', require('./dialogflow-fulfillment/webhook'))
+//app.use('/awsBucket', require('./awsBucket'))
 
 module.exports = app;

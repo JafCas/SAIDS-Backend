@@ -50,9 +50,10 @@ async function sendToDialogFlow(msg, session, params) {
     //Si el webhook al que se llegó es el deseado se ejecuta algo
     if (intentEmparejado === "webhookDemo") {
       testIntent = intentEmparejado;
+      process.env.INTENT_EMPAREJADO = intentEmparejado;
       console.log("[Dialogflow] Todo bien");
       console.log("test: ", testIntent);
-    } else {console.log('nada por aca')}
+    } else {console.log('nada por aca'); process.env.INTENT_EMPAREJADO = "";}
 
     let defaultResponses = [];
     if (result.action !== "input.unknown") {

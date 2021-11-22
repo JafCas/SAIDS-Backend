@@ -5,6 +5,7 @@ const upload = async (req, res) => {
     const bucket = req.body.bucket;
     const file = req.files.file;
     const result = await uploadBucket(bucket, file);
+    console.log("[upload.controller] test");
 
     res.json(result);
 };

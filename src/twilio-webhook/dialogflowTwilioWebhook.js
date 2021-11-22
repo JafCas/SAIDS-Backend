@@ -24,7 +24,7 @@ dialogflowTwilioWebhook.get("/", function (req, res) {
 });
 
 dialogflowTwilioWebhook.post("/", async function (req, res) {
-  console.log("req ->", req.body);
+  console.log("[dialogflowTwilioWebhook] req ->", req.body);
   messageComesFromPhone = req.body.WaId;
   let receivedMessage = req.body.Body;
 
@@ -125,14 +125,21 @@ for (const response of responses) {
   //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
 }
 
-const printer = new PdfPrinter(fonts);
-const fileName = messageComesFromPhone;
-console.log("nombre archivo: ", fileName);
-//var testVariable = test;
-console.log("Intent que se ve desde DTW: ", testIntent);
-let pdfDoc = printer.createPdfKitDocument(docDefinition);
-pdfDoc.pipe(fs.createWriteStream("./createdFiles/"+fileName+".pdf"));
-pdfDoc.end();
+//Recibe valor del intent emparejado
+var intentEmparejado = process.env.INTENT_EMPAREJADO;
+console.log("[dialogflowTwilioWebhook] Intent que se ve desde DTW: ", intentEmparejado);
+if (intentEmparejado === "webhookDemo") {
+  //
+  const printer = new PdfPrinter(fonts);
+  const fileName = messageComesFromPhone;
+  console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
+  let pdfDoc = printer.createPdfKitDocument(docDefinition);
+  //let fileName = ["./createdFiles/", ]
+  let nombreArchivo = "./createdFiles/"+fileName+".pdf";
+  pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
+  pdfDoc.end();
+  process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
+}
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
 });
@@ -146,7 +153,7 @@ async function setSessionAndUser(senderId) {
     throw error;
   }
 }
-console.log("Twilio Webhook Workin'")
+console.log("[dialogflowTwilioWebhook] Twilio Webhook Workin'")
 
 module.exports = dialogflowTwilioWebhook;
 
