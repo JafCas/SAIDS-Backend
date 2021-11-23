@@ -23,6 +23,7 @@ app.use(express.json()); //Envia archivos en formato json
 //routes
 app.use('/api/users', require('./routes/users'))
 app.use('/api/records', require('./routes/records'))
+app.use('/api/participantes', require('./routes/participantes'))
 app.use('/webhook', require('./twilio-webhook/dialogflowTwilioWebhook'))
 app.use('/dialogflow-fulfillment', require('./dialogflow-fulfillment/webhook'))
 

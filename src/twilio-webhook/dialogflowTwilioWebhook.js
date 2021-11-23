@@ -8,6 +8,8 @@ const dialogflow = require("./src/dialogflow");
 const uuid = require("uuid");
 const PdfPrinter = require("pdfmake");
 const fs = require("fs");
+const axios = require("axios");
+const participanteSchema = require("../models/Participante");
 
 //De AWS
 const S3 = require("aws-sdk/clients/s3");
@@ -54,6 +56,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   setSessionAndUser(messageComesFromPhone);
   let session = sessionIds.get(messageComesFromPhone);
   //TODO: Se guarda en memoria pero se tiene que mover a base de datos
+  console.log("[/**SESSION**/: ]", session);
   let payload = await dialogflow.sendToDialogFlow(receivedMessage, session);
   let responses = payload.fulfillmentMessages;
 
@@ -155,10 +158,10 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     intentEmparejado
   );
   if (intentEmparejado === "webhookDemo") {
-    //
+    //CREA EL ARCHIVO PDF
     const printer = new PdfPrinter(fonts);
     const fileName = messageComesFromPhone;
-    console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
+    //console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
     let pdfDoc = printer.createPdfKitDocument(docDefinition);
     //let fileName = ["./createdFiles/", ]
     let nombreArchivo = "./createdFiles/" + fileName + ".pdf";
@@ -168,7 +171,22 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
     pdfDoc.end();
     process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
+    process.env.WA_NUMBER=messageComesFromPhone;
 
+    //GUARDA LOS DATOS EN LA DB
+    await axios.post("http://localhost:4000/api/participantes", {
+      WaID: session,
+      WaNumber: messageComesFromPhone,
+      //nombresParticipante: "test",
+    });
+    //const res = db.participantes.find({WaNumber: '5215518387942'}).pretty();
+    //console.log("[DFTW] lo obtenido: ", res);
+    //console.log(db.participantes.find({WaNumber: '5215518387942'}));
+    //await participanteSchema.fin
+
+    process.env.ID_PASADO= session;
+
+    //SUBE EL ARCHIVO AL BUCKET S3
     const uploadBucket = (bucketName, file) => {
       const stream = fs.createReadStream(nombreArchivo);
       const params = {

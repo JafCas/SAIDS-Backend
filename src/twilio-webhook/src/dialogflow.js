@@ -3,6 +3,9 @@
  */
 const dialogflow = require("dialogflow");
 const config = require("./config");
+const axios = require("axios");
+
+const participanteSchema = require("../../models/Participante");
 
 const credentials = {
   client_email: config.GOOGLE_CLIENT_EMAIL,
@@ -70,9 +73,40 @@ async function sendToDialogFlow(msg, session, params) {
       });
     }
     result.fulfillmentMessages = defaultResponses;
-    //console.log(JSON.stringify(result, null, " "));
+    console.log(JSON.stringify(result, null, " "));
+    console.log("[/**LA ACCION**/]: ", result.action);
+    if (
+      result.action ===
+      "DefaultWelcomeIntent.DefaultWelcomeIntent-custom.iniciar-custom"
+    ) {
+      console.log("[DIALOGFLOW] WaNumber: ", process.env.WA_NUMBER);
+      if (
+        result.parameters.fields.nombreParticipante.stringValue !== "" &&
+        result.parameters.fields.apellidoParticipante.stringValue !== "" &&
+        result.parameters.fields.edadParticipante.stringValue !== "" &&
+        result.parameters.fields.emailParticipante.stringValue !== ""
+      ) {
+        const newParticipante = {
+          //WaID:
+          //WaNumber
+          nombresParticipante:
+            result.parameters.fields.nombreParticipante.stringValue,
+          apellidoParticipante:
+            result.parameters.fields.apellidoParticipante.stringValue,
+          edadParticipante:
+            result.parameters.fields.edadParticipante.stringValue,
+          emailParticipante:
+            result.parameters.fields.emailParticipante.stringValue,
+        };
+        let WaID = process.env.ID_PASADO;
+        await participanteSchema.findOneAndUpdate({WaNumber : process.env.WA_NUMBER}, newParticipante);
+
+        //await axios.post("http://localhost:4000/api/participantes" , newParticipante);
+        console.log("[/**MANDADOS A LA DATABASE**/]: ");
+      }
+    }
     return result;
-    // console.log("se enviara el resultado: ", result);
+    //console.log("se enviara el resultado: ", result);
   } catch (e) {
     console.log("error");
     console.log(e);
