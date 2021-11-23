@@ -60,10 +60,65 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let payload = await dialogflow.sendToDialogFlow(receivedMessage, session);
   let responses = payload.fulfillmentMessages;
 
+  //Fetch a la base de datos
+  let registroParticipante = await participanteSchema.findOne({
+    WaNumber: messageComesFromPhone,
+  });
+
+  let nombresParticipante,
+    apellidoParticipante,
+    edadParticipante,
+    emailParticipante,
+    fechaParticipacion;
+  if (registroParticipante === null) {
+    nombresParticipante = "";
+    apellidoParticipante = "";
+    edadParticipante = "";
+    emailParticipante = "";
+    fechaParticipacion = "";
+  } else {
+    nombresParticipante = registroParticipante.nombresParticipante;
+    apellidoParticipante = registroParticipante.apellidoParticipante;
+    edadParticipante = registroParticipante.edadParticipante;
+    emailParticipante = registroParticipante.emailParticipante;
+    fechaParticipacion = registroParticipante.updatedAt;
+  }
+
+  let nombreCompletoParticipante = [nombresParticipante, apellidoParticipante];
+  nombreCompletoParticipante = nombreCompletoParticipante.join(" ");
+  let edadCompletaParticipante = [edadParticipante, "años"];
+  edadCompletaParticipante = edadCompletaParticipante.join(" ");
+  let nombreEdadParticipante = [
+    nombreCompletoParticipante,
+    edadCompletaParticipante,
+  ];
+  nombreEdadParticipante = nombreEdadParticipante.join("\n");
+  let fechaParticipacionOnly = "";
+  if (fechaParticipacion !== "") {
+    fechaParticipacionOnly =
+      (fechaParticipacion.getDate() > 9
+        ? fechaParticipacion.getDate()
+        : "0" + fechaParticipacion.getDate()) +
+      "/" +
+      (fechaParticipacion.getMonth() > 8
+        ? fechaParticipacion.getMonth() + 1
+        : "0" + (fechaParticipacion.getMonth() + 1)) +
+      "/" +
+      fechaParticipacion.getFullYear();
+  }
+  console.log("fecha en string: ", fechaParticipacionOnly);
+  fechaParticipacionOnly = [
+    "\nFecha de participación:",
+    fechaParticipacionOnly,
+    "\n",
+  ];
+  fechaParticipacionOnly = fechaParticipacionOnly.join(" ");
+  //let fechaParticipacionOnly = fechaParticipacion[0];
   let docDefinition = {
     content: [
       {
-        text: "Leonel Jafet Castillo Martinez\n 23 años",
+        text: nombreEdadParticipante,
+        //text: "Leonel Jafet Castillo Martinez\n 23 años",
         style: "header",
         margin: [100, 50, 0, 20],
       },
@@ -85,12 +140,14 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             text: messageComesFromPhone,
           },
           {
-            text: "correo@dominio.com",
+            //text: "correo@dominio.com",
+            text: emailParticipante,
           },
         ],
       },
       {
-        text: "\nFecha de participación: dd/mm/aaaa\n\n",
+        text: fechaParticipacionOnly,
+        //text: "\nFecha de participación: dd/mm/aaaa\n\n",
         margin: [50, 0, 0, 0],
       },
       {
@@ -171,29 +228,35 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
     pdfDoc.end();
     process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
-    process.env.WA_NUMBER=messageComesFromPhone;
+    process.env.WA_NUMBER = messageComesFromPhone;
 
     //GUARDA LOS DATOS EN LA DB
-    await axios.post("http://localhost:4000/api/participantes", {
-      WaID: session,
+    const yaExiste = await participanteSchema.findOne({
       WaNumber: messageComesFromPhone,
-      //nombresParticipante: "test",
     });
-    //const res = db.participantes.find({WaNumber: '5215518387942'}).pretty();
-    //console.log("[DFTW] lo obtenido: ", res);
-    //console.log(db.participantes.find({WaNumber: '5215518387942'}));
-    //await participanteSchema.fin
 
-    process.env.ID_PASADO= session;
+    if (yaExiste === null) {
+      //Si no existe un registro con este numero, se crea uno nuevo
+      await axios.post("http://localhost:4000/api/participantes", {
+        WaID: session,
+        WaNumber: messageComesFromPhone,
+      });
+    } else {
+      await participanteSchema.findOneAndUpdate(
+        { WaNumber: messageComesFromPhone },
+        { WaID: session }
+      );
+      console.log("ya existe raza, pero se actualizó");
+    }
+
+    process.env.ID_PASADO = session;
 
     //SUBE EL ARCHIVO AL BUCKET S3
     const uploadBucket = (bucketName, file) => {
       const stream = fs.createReadStream(nombreArchivo);
       const params = {
         Bucket: bucketName,
-        //Bucket: "test-files-node",
         Key: file,
-        //Key: "texttest.txt",
         Body: stream,
       };
       return storage.upload(params).promise();

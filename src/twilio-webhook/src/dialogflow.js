@@ -73,7 +73,8 @@ async function sendToDialogFlow(msg, session, params) {
       });
     }
     result.fulfillmentMessages = defaultResponses;
-    console.log(JSON.stringify(result, null, " "));
+    //Muestra detalles de la comunicacion con DF
+    //console.log(JSON.stringify(result, null, " "));
     console.log("[/**LA ACCION**/]: ", result.action);
     if (
       result.action ===
@@ -83,23 +84,22 @@ async function sendToDialogFlow(msg, session, params) {
       if (
         result.parameters.fields.nombreParticipante.stringValue !== "" &&
         result.parameters.fields.apellidoParticipante.stringValue !== "" &&
-        result.parameters.fields.edadParticipante.stringValue !== "" &&
+        result.parameters.fields.edadParticipante.numberValue !== "" &&
         result.parameters.fields.emailParticipante.stringValue !== ""
       ) {
         const newParticipante = {
-          //WaID:
-          //WaNumber
           nombresParticipante:
             result.parameters.fields.nombreParticipante.stringValue,
           apellidoParticipante:
             result.parameters.fields.apellidoParticipante.stringValue,
           edadParticipante:
-            result.parameters.fields.edadParticipante.stringValue,
+            result.parameters.fields.edadParticipante.numberValue,
           emailParticipante:
             result.parameters.fields.emailParticipante.stringValue,
         };
         let WaID = process.env.ID_PASADO;
-        await participanteSchema.findOneAndUpdate({WaNumber : process.env.WA_NUMBER}, newParticipante);
+        const WaNumber = process.env.WA_NUMBER;
+        await participanteSchema.findOneAndUpdate({WaNumber : WaNumber}, newParticipante);
 
         //await axios.post("http://localhost:4000/api/participantes" , newParticipante);
         console.log("[/**MANDADOS A LA DATABASE**/]: ");

@@ -6,14 +6,14 @@ const participanteSchema = new Schema(
     WaNumber: { type: String, unique: true, trim: true },
     nombresParticipante: String,
     apellidoParticipante: String,
-    edadParticipante: String,
+    edadParticipante: Number,
     emailParticipante: String,
     respuestasFiltroAnsiedad: String,
     respuestasFiltroDepresion: String,
     testAnsiedad: String,
     testDepresion: String,
     ansiedadFileLink: String,
-    depresionFileLink: String
+    depresionFileLink: String,
   },
   {
     timestamps: true,
