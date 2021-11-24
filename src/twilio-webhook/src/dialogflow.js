@@ -75,6 +75,15 @@ async function sendToDialogFlow(msg, session, params) {
     result.fulfillmentMessages = defaultResponses;
     //Muestra detalles de la comunicacion con DF
     //console.log(JSON.stringify(result, null, " "));
+
+    //Checa si ya existe el registro para este numero de whats
+    const Wa_Number = process.env.WA_NUMBER;
+    let WaID = process.env.ID_PASADO;
+    console.log("El WA_NUMBER que recibe: ", Wa_Number);
+    const yaExiste = await participanteSchema.findOne({
+      WaNumber: Wa_Number,
+    });
+
     console.log("[/**LA ACCION**/]: ", result.action);
     if (
       result.action ===
@@ -97,14 +106,62 @@ async function sendToDialogFlow(msg, session, params) {
           emailParticipante:
             result.parameters.fields.emailParticipante.stringValue,
         };
-        let WaID = process.env.ID_PASADO;
-        const WaNumber = process.env.WA_NUMBER;
-        await participanteSchema.findOneAndUpdate({WaNumber : WaNumber}, newParticipante);
+        if (yaExiste !== null) {
+          //Encuentra el registro de la base de datos y lo actualiza
+          await participanteSchema.findOneAndUpdate(
+            { WaNumber: Wa_Number },
+            newParticipante
+          );
+          console.log("[Dialogflow] /**ACTUALIZADO**/: ");
+        } else {
+          console.log("[Dialogflow] /**NO EXISTIA PERO YA LO CREÉ**/: ");
+          await axios.post("http://localhost:4000/api/participantes", {
+            WaID: WaID,
+            WaNumber: Wa_Number,
+          });
+        }
 
         //await axios.post("http://localhost:4000/api/participantes" , newParticipante);
         console.log("[/**MANDADOS A LA DATABASE**/]: ");
       }
     }
+    if (
+      result.action ===
+      "DefaultWelcomeIntent.DefaultWelcomeIntent-custom.iniciar-custom.iniciar-datos-custom.inicio-preguntas-filtro-custom"
+    ) {
+      console.log("entrando a la segunda accion: ", Wa_Number);
+      if (
+        result.parameters.fields.preguntaAnsiedad_1.stringValue !== "" &&
+        result.parameters.fields.preguntaAnsiedad_2.stringValue !== "" &&
+        result.parameters.fields.preguntaDepresion_1.stringValue !== "" &&
+        result.parameters.fields.preguntaDepresion_2.numberValue !== ""
+      ) {
+        console.log("Respuestas obtenidas: ");
+        console.log("1. ", result.parameters.fields.preguntaAnsiedad_1.stringValue);
+        console.log("2. ", result.parameters.fields.preguntaAnsiedad_2.stringValue);
+        console.log("3. ", result.parameters.fields.preguntaDepresion_1.stringValue);
+        console.log("4. ", result.parameters.fields.preguntaDepresion_2.stringValue);
+        const respuestasParticipante = {
+          preguntaAnsiedad_1:
+            result.parameters.fields.preguntaAnsiedad_1.stringValue,
+          preguntaAnsiedad_2:
+            result.parameters.fields.preguntaAnsiedad_2.stringValue,
+          preguntaDepresion_1:
+            result.parameters.fields.preguntaDepresion_1.stringValue,
+          preguntaDepresion_2:
+            result.parameters.fields.preguntaDepresion_2.stringValue,
+        };
+        //if (yaExiste !== null) {
+          //Encuentra el registro de la base de datos y lo actualiza
+          await participanteSchema.findOneAndUpdate(
+            { WaNumber: Wa_Number },
+            respuestasParticipante
+          );
+          console.log("[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: ");
+        //}
+      }
+    }
+
     return result;
     //console.log("se enviara el resultado: ", result);
   } catch (e) {

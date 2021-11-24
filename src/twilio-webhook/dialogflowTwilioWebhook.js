@@ -69,21 +69,34 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     apellidoParticipante,
     edadParticipante,
     emailParticipante,
-    fechaParticipacion;
+    fechaParticipacion,
+    preguntaAnsiedad_1,
+    preguntaAnsiedad_2,
+    preguntaDepresion_1,
+    preguntaDepresion_2;
   if (registroParticipante === null) {
     nombresParticipante = "";
     apellidoParticipante = "";
     edadParticipante = "";
     emailParticipante = "";
     fechaParticipacion = "";
+    preguntaAnsiedad_1 = "";
+    preguntaAnsiedad_2 = "";
+    preguntaDepresion_1 = "";
+    preguntaDepresion_2 = "";
   } else {
     nombresParticipante = registroParticipante.nombresParticipante;
     apellidoParticipante = registroParticipante.apellidoParticipante;
     edadParticipante = registroParticipante.edadParticipante;
     emailParticipante = registroParticipante.emailParticipante;
     fechaParticipacion = registroParticipante.updatedAt;
+    preguntaAnsiedad_1 = registroParticipante.preguntaAnsiedad_1;
+    preguntaAnsiedad_2 = registroParticipante.preguntaAnsiedad_2;
+    preguntaDepresion_1 = registroParticipante.preguntaDepresion_1;
+    preguntaDepresion_2 = registroParticipante.preguntaDepresion_2;
   }
 
+  //Formateo para archivo pdf
   let nombreCompletoParticipante = [nombresParticipante, apellidoParticipante];
   nombreCompletoParticipante = nombreCompletoParticipante.join(" ");
   let edadCompletaParticipante = [edadParticipante, "años"];
@@ -106,19 +119,131 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       "/" +
       fechaParticipacion.getFullYear();
   }
-  console.log("fecha en string: ", fechaParticipacionOnly);
   fechaParticipacionOnly = [
     "\nFecha de participación:",
     fechaParticipacionOnly,
     "\n",
   ];
   fechaParticipacionOnly = fechaParticipacionOnly.join(" ");
-  //let fechaParticipacionOnly = fechaParticipacion[0];
+
+  /** PUNTUACIONES  */
+  let decorationAnsiedad0 = "",
+    decorationAnsiedad1 = "",
+    decorationAnsiedad2 = "",
+    decorationAnsiedad3 = "";
+  let boldAnsiedad0 = false,
+    boldAnsiedad1 = false,
+    boldAnsiedad2 = false,
+    boldAnsiedad3 = false;
+
+  switch (preguntaAnsiedad_1) {
+    case "0":
+      decorationAnsiedad0 = "underline";
+      boldAnsiedad0 = true;
+      break;
+    case "1":
+      decorationAnsiedad1 = "underline";
+      boldAnsiedad1 = true;
+      break;
+    case "2":
+      decorationAnsiedad2 = "underline";
+      boldAnsiedad2 = true;
+      break;
+    case "3":
+      decorationAnsiedad3 = "underline";
+      boldAnsiedad3 = true;
+      break;
+  }
+
+  let decorationAnsiedad0_2 = "",
+    decorationAnsiedad1_2 = "",
+    decorationAnsiedad2_2 = "",
+    decorationAnsiedad3_2 = "";
+  let boldAnsiedad0_2 = false,
+    boldAnsiedad1_2 = false,
+    boldAnsiedad2_2 = false,
+    boldAnsiedad3_2 = false;
+
+  switch (preguntaAnsiedad_2) {
+    case "0":
+      decorationAnsiedad0_2 = "underline";
+      boldAnsiedad0_2 = true;
+      break;
+    case "1":
+      decorationAnsiedad1_2 = "underline";
+      boldAnsiedad1_2 = true;
+      break;
+    case "2":
+      decorationAnsiedad2_2 = "underline";
+      boldAnsiedad2_2 = true;
+      break;
+    case "3":
+      decorationAnsiedad3_2 = "underline";
+      boldAnsiedad3_2 = true;
+      break;
+  }
+
+  let decorationDepresion0_1 = "",
+    decorationDepresion1_1 = "",
+    decorationDepresion2_1 = "",
+    decorationDepresion3_1 = "";
+  let boldDepresion0_1 = false,
+  boldDepresion1_1 = false,
+    boldDepresion2_1 = false,
+    boldDepresion3_1 = false;
+
+  switch (preguntaDepresion_1) {
+    case "0":
+      decorationDepresion0_1 = "underline";
+      boldDepresion0_1 = true;
+      break;
+    case "1":
+      decorationDepresion1_1 = "underline";
+      boldDepresion1_1 = true;
+      break;
+    case "2":
+      decorationDepresion2_1 = "underline";
+      boldDepresion2_1 = true;
+      break;
+    case "3":
+      decorationDepresion3_1 = "underline";
+      boldDepresion3_1 = true;
+      break;
+  }
+
+  let decorationDepresion0_2 = "",
+    decorationDepresion1_2 = "",
+    decorationDepresion2_2 = "",
+    decorationDepresion3_2 = "";
+  let boldDepresion0_2 = false,
+    boldDepresion1_2 = false,
+    boldDepresion2_2 = false,
+    boldDepresion3_2 = false;
+
+  switch (preguntaDepresion_2) {
+    case "0":
+      decorationDepresion0_2 = "underline";
+      boldDepresion0_2 = true;
+      break;
+    case "1":
+      decorationDepresion1_2 = "underline";
+      boldDepresion1_2 = true;
+      break;
+    case "2":
+      decorationDepresion2_2 = "underline";
+      boldDepresion2_2 = true;
+      break;
+    case "3":
+      decorationDepresion3_2 = "underline";
+      boldDepresion3_2 = true;
+      break;
+  }
+
+  //TODO: Dar formato a este archivo
   let docDefinition = {
     content: [
       {
         text: nombreEdadParticipante,
-        //text: "Leonel Jafet Castillo Martinez\n 23 años",
         style: "header",
         margin: [100, 50, 0, 20],
       },
@@ -140,47 +265,328 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             text: messageComesFromPhone,
           },
           {
-            //text: "correo@dominio.com",
             text: emailParticipante,
           },
         ],
       },
       {
         text: fechaParticipacionOnly,
-        //text: "\nFecha de participación: dd/mm/aaaa\n\n",
         margin: [50, 0, 0, 0],
       },
+      "\n",
       {
         text: "Resultados de preguntas filtro",
         style: "subheader",
+        alignment: "center",
+        color: "#d58e76",
+      },
+      "\n",
+      //Prueba de filas
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
       },
       {
-        alignment: "justify",
+        //Presentacion
+        alignment: "center",
         columns: [
           {
-            text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.",
+            text: "Preguntas Filtro",
+            style: { fontSize: 15 },
+            bold: true,
+            margin: [0, 27, 0, 5],
           },
           {
-            text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.",
+            //Respuestas MINI
+            columns: [
+              {
+                text: "Ningún día",
+                bold: true,
+                margin: [0, 20, 0, 0],
+              },
+              {
+                text: "Menos de la mitad de los días",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                text: "Más de la mitad de los días",
+                bold: true,
+                margin: [0, 10, 0, 0],
+              },
+              {
+                text: "Casi todos los días",
+                bold: true,
+                margin: [0, 14, 0, 0],
+              },
+            ],
           },
         ],
       },
-      "\n",
-      /*{
-        text: "#5518387942\n\n",
-        style: "subheader",
-      },*/
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.",
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.\n\n",
       {
-        text: "Subheader 2 - using subheader style",
-        style: "subheader",
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
       },
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.",
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.\n\n",
       {
-        text: "It is possible to apply multiple styles, by passing an array. This paragraph uses two styles: quote and small. When multiple styles are provided, they are evaluated in the specified order which is important in case they define the same properties",
-        style: ["quote", "small"],
+        //ENTREVISTA MINI
+        alignment: "center",
+        columns: [
+          {
+            text: "Preguntas de entrevista MINI",
+            style: { fontSize: 13 },
+            bold: true,
+            margin: [0, 5, 0, 5],
+          },
+          {
+            //Respuestas MINI
+            columns: [
+              {
+                // text: "Ningún día",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Menos de la mitad de los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Más de la mitad de los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Casi todos los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
+      },
+      {
+        //Pregunta 1
+        alignment: "center",
+        columns: [
+          {
+            text: "¿Dlurante las últimas dos semanas se ha sentido excesivamente preocupado o ansioso debido a varias cosas?",
+            margin: [0, 5, 0, 5],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                text: "0",
+                bold: boldAnsiedad0,
+                decoration: decorationAnsiedad0,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "1",
+                bold: boldAnsiedad1,
+                decoration: decorationAnsiedad1,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "2",
+                bold: boldAnsiedad2,
+                decoration: decorationAnsiedad2,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "3",
+                bold: boldAnsiedad3,
+                decoration: decorationAnsiedad3,
+                margin: [0, 17, 0, 0],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
+      },
+      {
+        //Pregunta 2
+        alignment: "center",
+        columns: [
+          {
+            text: "¿Estas molestias se presentan estas preocupasiones casi todos los días?",
+            margin: [0, 5, 0, 5],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                text: "0",
+                bold: boldAnsiedad0_2,
+                decoration: decorationAnsiedad0_2,
+                margin: [0, 12, 0, 0],
+              },
+              {
+                text: "1",
+                bold: boldAnsiedad1_2,
+                decoration: decorationAnsiedad1_2,
+                margin: [0, 12, 0, 0],
+              },
+              {
+                text: "2",
+                bold: boldAnsiedad2_2,
+                decoration: decorationAnsiedad2_2,
+                margin: [0, 12, 0, 0],
+              },
+              {
+                text: "3",
+                bold: boldAnsiedad3_2,
+                decoration: decorationAnsiedad3_2,
+                margin: [0, 12, 0, 0],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
+      },
+      "",
+      {
+        //CUESTIONARIO PHQ-2
+        alignment: "center",
+        columns: [
+          {
+            text: "Preguntas PHQ-2",
+            style: { fontSize: 13 },
+            bold: true,
+            margin: [0, 5, 0, 5],
+          },
+          {
+            //Respuestas PHQ
+            columns: [
+              {
+                // text: "Ningún día",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Menos de la mitad de los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Más de la mitad de los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+              {
+                // text: "Casi todos los días",
+                text: "",
+                bold: true,
+                margin: [0, 2, 0, 2],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
+      },
+      {
+        //Pregunta 3
+        alignment: "center",
+        columns: [
+          {
+            text: "Durante las últimas 2 semanas, ¿qué tan seguido has tenido molestias debido al poco interés o placer en hacer cosas?",
+            margin: [0, 10, 0, 10],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                text: "0",
+                bold: boldDepresion0_1,
+                decoration: decorationDepresion0_1,
+                margin: [0, 23, 0, 0],
+              },
+              {
+                text: "1",
+                bold: boldDepresion1_1,
+                decoration: decorationDepresion1_1,
+                margin: [0, 23, 0, 0],
+              },
+              {
+                text: "2",
+                bold: boldDepresion2_1,
+                decoration: decorationDepresion2_1,
+                margin: [0, 23, 0, 0],
+              },
+              {
+                text: "3",
+                bold: boldDepresion3_1,
+                decoration: decorationDepresion3_1,
+                margin: [0, 23, 0, 0],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
+      },
+      {
+        //Pregunta 4
+        alignment: "center",
+        columns: [
+          {
+            text: "¿Se ha sentido decaído(a), deprimido(a) o sin esperanzas?",
+            margin: [0, 10, 0, 10],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                text: "0",
+                bold: boldDepresion0_2,
+                decoration: decorationDepresion0_2,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "1",
+                bold: boldDepresion1_2,
+                decoration: decorationDepresion1_2,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "2",
+                bold: boldDepresion2_2,
+                decoration: decorationDepresion2_2,
+                margin: [0, 17, 0, 0],
+              },
+              {
+                text: "3",
+                bold: boldDepresion3_2,
+                decoration: decorationDepresion3_2,
+                margin: [0, 17, 0, 0],
+              },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
       },
     ],
     styles: {
@@ -214,6 +620,28 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     "[dialogflowTwilioWebhook] Intent que se ve desde DTW: ",
     intentEmparejado
   );
+  //GUARDA LOS DATOS EN LA DB
+  //Wacha si ya existe
+  const yaExiste = await participanteSchema.findOne({
+    WaNumber: messageComesFromPhone,
+  });
+
+  if (yaExiste === null) {
+    //Si no existe un registro con este numero, se crea uno nuevo
+    await axios.post("http://localhost:4000/api/participantes", {
+      WaID: session,
+      WaNumber: messageComesFromPhone,
+    });
+  } else {
+    await participanteSchema.findOneAndUpdate(
+      { WaNumber: messageComesFromPhone },
+      { WaID: session }
+    );
+    console.log("ya existe raza, pero se actualizó");
+  }
+  process.env.WA_NUMBER = messageComesFromPhone;
+
+  //A partir del intent webhook
   if (intentEmparejado === "webhookDemo") {
     //CREA EL ARCHIVO PDF
     const printer = new PdfPrinter(fonts);
@@ -228,26 +656,6 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
     pdfDoc.end();
     process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
-    process.env.WA_NUMBER = messageComesFromPhone;
-
-    //GUARDA LOS DATOS EN LA DB
-    const yaExiste = await participanteSchema.findOne({
-      WaNumber: messageComesFromPhone,
-    });
-
-    if (yaExiste === null) {
-      //Si no existe un registro con este numero, se crea uno nuevo
-      await axios.post("http://localhost:4000/api/participantes", {
-        WaID: session,
-        WaNumber: messageComesFromPhone,
-      });
-    } else {
-      await participanteSchema.findOneAndUpdate(
-        { WaNumber: messageComesFromPhone },
-        { WaID: session }
-      );
-      console.log("ya existe raza, pero se actualizó");
-    }
 
     process.env.ID_PASADO = session;
 
