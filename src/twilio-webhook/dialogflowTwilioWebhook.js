@@ -73,7 +73,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaAnsiedad_1,
     preguntaAnsiedad_2,
     preguntaDepresion_1,
-    preguntaDepresion_2;
+    preguntaDepresion_2,
+    ansiedadFileLink;
   if (registroParticipante === null) {
     nombresParticipante = "";
     apellidoParticipante = "";
@@ -84,6 +85,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaAnsiedad_2 = "";
     preguntaDepresion_1 = "";
     preguntaDepresion_2 = "";
+    ansiedadFileLink = "";
   } else {
     nombresParticipante = registroParticipante.nombresParticipante;
     apellidoParticipante = registroParticipante.apellidoParticipante;
@@ -94,6 +96,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaAnsiedad_2 = registroParticipante.preguntaAnsiedad_2;
     preguntaDepresion_1 = registroParticipante.preguntaDepresion_1;
     preguntaDepresion_2 = registroParticipante.preguntaDepresion_2;
+    ansiedadFileLink = registroParticipante.ansiedadFileLink;
   }
 
   //Formateo para archivo pdf
@@ -631,11 +634,13 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     await axios.post("http://localhost:4000/api/participantes", {
       WaID: session,
       WaNumber: messageComesFromPhone,
+      ansiedadFileLink: ansiedadFileLink,
     });
   } else {
     await participanteSchema.findOneAndUpdate(
       { WaNumber: messageComesFromPhone },
-      { WaID: session }
+      { WaID: session },
+      //{ ansiedadFileLink: process.env.fileURL },
     );
     console.log("ya existe raza, pero se actualizó");
   }
@@ -648,12 +653,12 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     const fileName = messageComesFromPhone;
     //console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
     let pdfDoc = printer.createPdfKitDocument(docDefinition);
-    //let fileName = ["./createdFiles/", ]
     let nombreArchivo = "./createdFiles/" + fileName + ".pdf";
     let nombreCorto = [fileName, ".pdf"];
     nombreCorto = nombreCorto.join("");
     console.log("[DTW] nombre archivo: ", nombreCorto);
     pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
+    //let stream = fs.createReadStream(nombreArchivo);
     pdfDoc.end();
     process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
 
@@ -661,11 +666,11 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
     //SUBE EL ARCHIVO AL BUCKET S3
     const uploadBucket = (bucketName, file) => {
-      const stream = fs.createReadStream(nombreArchivo);
+      //let stream = fs.createReadStream(nombreArchivo);
       const params = {
         Bucket: bucketName,
         Key: file,
-        Body: stream,
+        Body: fs.createReadStream(nombreArchivo),
       };
       return storage.upload(params).promise();
     };
@@ -674,6 +679,16 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     let bucket = "test-files-node";
     let file = nombreCorto;
     uploadBucket(bucket, file);
+
+    //Hardcodear object URL
+    var fileURL = ["https://", bucket, ".s3.", process.env.AWS_REGION, ".amazonaws.com/", nombreCorto];
+    fileURL = fileURL.join("");
+    await participanteSchema.findOneAndUpdate(
+      { WaNumber: messageComesFromPhone },
+      { ansiedadFileLink: fileURL },
+      //{ ansiedadFileLink: process.env.fileURL },
+    );
+    console.log("URL: ", fileURL);
   }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
