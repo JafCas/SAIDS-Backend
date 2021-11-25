@@ -60,11 +60,16 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let payload = await dialogflow.sendToDialogFlow(receivedMessage, session);
   let responses = payload.fulfillmentMessages;
 
-  //Fetch a la base de datos
+  //Recupera registros de la base de datos
   let registroParticipante = await participanteSchema.findOne({
+    /**
+     * Encuentra un registro donde el número de WhatsApp sea igual al
+     * número del cual vienen los mensajes de esta conversación
+     */
     WaNumber: messageComesFromPhone,
   });
 
+  //Declara los valores que esperas de la base de datos para su uso localmente
   let nombresParticipante,
     apellidoParticipante,
     edadParticipante,
@@ -75,7 +80,9 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaDepresion_1,
     preguntaDepresion_2,
     ansiedadFileLink;
+  //Si no existe un registro de participante que cumpla con la función anterior
   if (registroParticipante === null) {
+    //Vuelve vacíos todos los valores
     nombresParticipante = "";
     apellidoParticipante = "";
     edadParticipante = "";
@@ -87,6 +94,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaDepresion_2 = "";
     ansiedadFileLink = "";
   } else {
+    //Si sí existen valores con esa condición
+    //Asigna los valores locales a los obtenidos por la base de datos
     nombresParticipante = registroParticipante.nombresParticipante;
     apellidoParticipante = registroParticipante.apellidoParticipante;
     edadParticipante = registroParticipante.edadParticipante;
@@ -191,7 +200,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     decorationDepresion2_1 = "",
     decorationDepresion3_1 = "";
   let boldDepresion0_1 = false,
-  boldDepresion1_1 = false,
+    boldDepresion1_1 = false,
     boldDepresion2_1 = false,
     boldDepresion3_1 = false;
 
@@ -254,10 +263,10 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         alignment: "center",
         columns: [
           {
-            text: "No. telefonico:",
+            text: "No. telefonico:", //Muestra este texto estáticamente
           },
           {
-            text: "email:",
+            text: "email:", //Muestra este texto estáticamente
           },
         ],
       },
@@ -265,10 +274,10 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         alignment: "center",
         columns: [
           {
-            text: messageComesFromPhone,
+            text: messageComesFromPhone, //Cambia dinámicamente este texto
           },
           {
-            text: emailParticipante,
+            text: emailParticipante, //Cambia dinámicamente este texto
           },
         ],
       },
@@ -614,7 +623,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   };
 
   for (const response of responses) {
-    //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
+    await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
   }
 
   //Recibe valor del intent emparejado
@@ -639,7 +648,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   } else {
     await participanteSchema.findOneAndUpdate(
       { WaNumber: messageComesFromPhone },
-      { WaID: session },
+      { WaID: session }
       //{ ansiedadFileLink: process.env.fileURL },
     );
     console.log("ya existe raza, pero se actualizó");
@@ -668,27 +677,34 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     const uploadBucket = (bucketName, file) => {
       //let stream = fs.createReadStream(nombreArchivo);
       const params = {
-        Bucket: bucketName,
-        Key: file,
-        Body: fs.createReadStream(nombreArchivo),
+        Bucket: bucketName, //Nombre del bucket, establecido en la linea 678
+        Key: file, //Nombre del archivo,
+        Body: fs.createReadStream(nombreArchivo), //Contenido del archivo
       };
       return storage.upload(params).promise();
     };
 
     //Sube al bucket de S3 el archivo
-    let bucket = "test-files-node";
-    let file = nombreCorto;
-    uploadBucket(bucket, file);
+    let bucket = "test-files-node"; //Bucket de datos seleccionado
+    let file = nombreCorto; //Obtenido de la comunicación con el chatbot (Número_Whatsapp.pdf)
+    uploadBucket(bucket, file); //Ejecutar función || Subir archivo al bucket
 
-    //Hardcodear object URL
-    var fileURL = ["https://", bucket, ".s3.", process.env.AWS_REGION, ".amazonaws.com/", nombreCorto];
+    //Calcular object URL
+    var fileURL = [
+      "https://",
+      bucket,
+      ".s3.",
+      process.env.AWS_REGION,
+      ".amazonaws.com/",
+      nombreCorto,
+    ];
     fileURL = fileURL.join("");
     await participanteSchema.findOneAndUpdate(
+      //Adición de la URL del archivo en la base de datos de MongoDB
       { WaNumber: messageComesFromPhone },
-      { ansiedadFileLink: fileURL },
-      //{ ansiedadFileLink: process.env.fileURL },
+      { ansiedadFileLink: fileURL }
     );
-    console.log("URL: ", fileURL);
+    console.log("URL del archivo recién cargado: ", fileURL);
   }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });

@@ -126,38 +126,41 @@ async function sendToDialogFlow(msg, session, params) {
       }
     }
     if (
+      //Si la acción actual es ...inicio-preguntas-filtro... => Ejecuta lo siguiente
       result.action ===
       "DefaultWelcomeIntent.DefaultWelcomeIntent-custom.iniciar-custom.iniciar-datos-custom.inicio-preguntas-filtro-custom"
     ) {
-      console.log("entrando a la segunda accion: ", Wa_Number);
       if (
-        result.parameters.fields.preguntaAnsiedad_1.stringValue !== "" &&
-        result.parameters.fields.preguntaAnsiedad_2.stringValue !== "" &&
-        result.parameters.fields.preguntaDepresion_1.stringValue !== "" &&
-        result.parameters.fields.preguntaDepresion_2.numberValue !== ""
+        result.parameters.fields.preguntaAnsiedad_1.stringValue !== "" && //Si el valor del campo preguntaAnsiedad_1 NO es vacío Y
+        result.parameters.fields.preguntaAnsiedad_2.stringValue !== "" && //Si el valor del campo preguntaAnsiedad_2 NO es vacío Y
+        result.parameters.fields.preguntaDepresion_1.stringValue !== "" && //Si el valor del campo preguntaDepresion_1 NO es vacío Y
+        result.parameters.fields.preguntaDepresion_2.numberValue !== "" //Si el valor del campo preguntaDepresion_2 NO es vacío
       ) {
-        console.log("Respuestas obtenidas: ");
-        console.log("1. ", result.parameters.fields.preguntaAnsiedad_1.stringValue);
-        console.log("2. ", result.parameters.fields.preguntaAnsiedad_2.stringValue);
-        console.log("3. ", result.parameters.fields.preguntaDepresion_1.stringValue);
-        console.log("4. ", result.parameters.fields.preguntaDepresion_2.stringValue);
+        // Ejecuta lo siguiente
         const respuestasParticipante = {
+          //Se crea un arreglo de valores que contiene lo siguiente
+          //El valor de preguntaAnsiedad_1 será el valor del campo obtenido de la conversación
           preguntaAnsiedad_1:
             result.parameters.fields.preguntaAnsiedad_1.stringValue,
+          //El valor de preguntaAnsiedad_2 será el valor del campo obtenido de la conversación
           preguntaAnsiedad_2:
             result.parameters.fields.preguntaAnsiedad_2.stringValue,
+          //El valor de preguntaDepresion_1 será el valor del campo obtenido de la conversación
           preguntaDepresion_1:
             result.parameters.fields.preguntaDepresion_1.stringValue,
+          //El valor de preguntaDepresion_2 será el valor del campo obtenido de la conversación
           preguntaDepresion_2:
             result.parameters.fields.preguntaDepresion_2.stringValue,
         };
         //if (yaExiste !== null) {
-          //Encuentra el registro de la base de datos y lo actualiza
-          await participanteSchema.findOneAndUpdate(
-            { WaNumber: Wa_Number },
-            respuestasParticipante
-          );
-          console.log("[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: ");
+        await participanteSchema.findOneAndUpdate(
+          //Busca en la base de datos y actualiza
+          { WaNumber: Wa_Number }, //Un registro cuyo Número de WhatsApp sea igual al Número de WhatsApp con el que se está conversando actualmente
+          respuestasParticipante //Actualiza los valores agregando el contenido del arreglo de la linea 138
+        );
+        console.log(
+          "[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: "
+        );
         //}
       }
     }
