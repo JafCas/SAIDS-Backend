@@ -165,6 +165,7 @@ async function sendToDialogFlow(msg, session, params) {
         //}
       }
     }
+    //Intencion encargada de aplicar Patience Health Questionnarie
     if (result.action === "hacer-preguntas-phq") {
       if (
         result.parameters.fields.respuestaPHQDepresion_3.stringValue !== "" &&
@@ -175,33 +176,151 @@ async function sendToDialogFlow(msg, session, params) {
         result.parameters.fields.respuestaPHQDepresion_8.stringValue !== "" &&
         result.parameters.fields.respuestaPHQDepresion_9.stringValue !== ""
       ) {
-        // const respuestasDelPHQ = {
-        let respuestaPHQDepresion_3 =
-          result.parameters.fields.respuestaPHQDepresion_3.stringValue;
-        let respuestaPHQDepresion_4 =
-          result.parameters.fields.respuestaPHQDepresion_4.stringValue;
-        let respuestaPHQDepresion_5 =
-          result.parameters.fields.respuestaPHQDepresion_5.stringValue;
-        let respuestaPHQDepresion_6 =
-          result.parameters.fields.respuestaPHQDepresion_6.stringValue;
-        let respuestaPHQDepresion_7 =
-          result.parameters.fields.respuestaPHQDepresion_7.stringValue;
-        let respuestaPHQDepresion_8 =
-          result.parameters.fields.respuestaPHQDepresion_8.stringValue;
-        let respuestaPHQDepresion_9 =
-          result.parameters.fields.respuestaPHQDepresion_9.stringValue;
-        // };
-        let respuestasDelPHQ = [
-          respuestaPHQDepresion_3,
-          respuestaPHQDepresion_4,
-          respuestaPHQDepresion_5,
-          respuestaPHQDepresion_6,
-          respuestaPHQDepresion_7,
-          respuestaPHQDepresion_8,
-          respuestaPHQDepresion_9,
+        const puntuacionCuestionarioPHQ = [
+          result.parameters.fields.respuestaPHQDepresion_3.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_4.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_5.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_6.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_7.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_8.stringValue,
+          result.parameters.fields.respuestaPHQDepresion_9.stringValue,
         ];
 
-        console.log("respuestasDelPHQ: ", respuestasDelPHQ );
+        const arregloDeRespuestas = {
+          puntuacionCuestionarioPHQ: puntuacionCuestionarioPHQ,
+        };
+
+        // let respuestaPHQDe
+        console.log("wa number al que va: ", Wa_Number);
+        await participanteSchema.findOneAndUpdate(
+          //Busca en la base de datos y actualiza
+          { WaNumber: Wa_Number }, //Un registro cuyo Número de WhatsApp sea igual al Número de WhatsApp con el que se está conversando actualmente
+          arregloDeRespuestas //Actualiza los valores agregando el contenido de respuestas del PHQ
+        );
+      }
+    }
+    //Test array
+    if (result.action === "array-test-action") {
+      if (
+        result.parameters.fields.array1.stringValue !== "" &&
+        result.parameters.fields.array1.stringValue !== ""
+      ) {
+        const puntuacionCuestionarioPHQ = [
+          (array1 = result.parameters.fields.array1.stringValue),
+          (array2 = result.parameters.fields.array2.stringValue),
+        ];
+
+        const arregloDeRespuestas = {
+          puntuacionCuestionarioPHQ: puntuacionCuestionarioPHQ,
+        };
+
+        await participanteSchema.findOneAndUpdate(
+          { WaNumber: Wa_Number },
+          arregloDeRespuestas
+        );
+      }
+    }
+    //Intencion encargada de aplicar Beck de Ansiedad
+    if (result.action === "hacer-preguntas-bai") {
+      if (
+        result.parameters.fields.respuestaBeckAnsiedad_1.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_2.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_3.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_4.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_5.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_6.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_7.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_8.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_9.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_10.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_11.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_12.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_13.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_14.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_15.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_16.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_17.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_18.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_19.stringValue !== "" &&
+        result.parameters.fields.respuestaBeckAnsiedad_20.stringValue !== ""
+        // TODO: agregar la 2da del filtro a la 21va de acá
+        //result.parameters.fields.respuestaBeckAnsiedad_21.stringValue !== "" &&
+      ) {
+        // const respuestasDelPHQ = {
+        let respuestaBeckAnsiedad_1 =
+          result.parameters.fields.respuestaBeckAnsiedad_1.stringValue;
+        let respuestaBeckAnsiedad_2 =
+          result.parameters.fields.respuestaBeckAnsiedad_2.stringValue;
+        let respuestaBeckAnsiedad_3 =
+          result.parameters.fields.respuestaBeckAnsiedad_3.stringValue;
+        let respuestaBeckAnsiedad_4 =
+          result.parameters.fields.respuestaBeckAnsiedad_4.stringValue;
+        let respuestaBeckAnsiedad_5 =
+          result.parameters.fields.respuestaBeckAnsiedad_5.stringValue;
+        let respuestaBeckAnsiedad_6 =
+          result.parameters.fields.respuestaBeckAnsiedad_6.stringValue;
+        let respuestaBeckAnsiedad_7 =
+          result.parameters.fields.respuestaBeckAnsiedad_7.stringValue;
+        let respuestaBeckAnsiedad_8 =
+          result.parameters.fields.respuestaBeckAnsiedad_8.stringValue;
+        let respuestaBeckAnsiedad_9 =
+          result.parameters.fields.respuestaBeckAnsiedad_9.stringValue;
+        let respuestaBeckAnsiedad_10 =
+          result.parameters.fields.respuestaBeckAnsiedad_10.stringValue;
+        let respuestaBeckAnsiedad_11 =
+          result.parameters.fields.respuestaBeckAnsiedad_11.stringValue;
+        let respuestaBeckAnsiedad_12 =
+          result.parameters.fields.respuestaBeckAnsiedad_12.stringValue;
+        let respuestaBeckAnsiedad_13 =
+          result.parameters.fields.respuestaBeckAnsiedad_13.stringValue;
+        let respuestaBeckAnsiedad_14 =
+          result.parameters.fields.respuestaBeckAnsiedad_14.stringValue;
+        let respuestaBeckAnsiedad_15 =
+          result.parameters.fields.respuestaBeckAnsiedad_15.stringValue;
+        let respuestaBeckAnsiedad_16 =
+          result.parameters.fields.respuestaBeckAnsiedad_16.stringValue;
+        let respuestaBeckAnsiedad_17 =
+          result.parameters.fields.respuestaBeckAnsiedad_17.stringValue;
+        let respuestaBeckAnsiedad_18 =
+          result.parameters.fields.respuestaBeckAnsiedad_18.stringValue;
+        let respuestaBeckAnsiedad_19 =
+          result.parameters.fields.respuestaBeckAnsiedad_19.stringValue;
+        let respuestaBeckAnsiedad_20 =
+          result.parameters.fields.respuestaBeckAnsiedad_20.stringValue;
+        // let respuestaBeckAnsiedad_21 =
+        //   result.parameters.fields.respuestaBeckAnsiedad_10.stringValue;
+
+        // };
+        const respuestasDelBAI = [
+          respuestaBeckAnsiedad_1,
+          respuestaBeckAnsiedad_2,
+          respuestaBeckAnsiedad_3,
+          respuestaBeckAnsiedad_4,
+          respuestaBeckAnsiedad_5,
+          respuestaBeckAnsiedad_6,
+          respuestaBeckAnsiedad_7,
+          respuestaBeckAnsiedad_8,
+          respuestaBeckAnsiedad_9,
+          respuestaBeckAnsiedad_10,
+          respuestaBeckAnsiedad_11,
+          respuestaBeckAnsiedad_12,
+          respuestaBeckAnsiedad_13,
+          respuestaBeckAnsiedad_14,
+          respuestaBeckAnsiedad_15,
+          respuestaBeckAnsiedad_16,
+          respuestaBeckAnsiedad_17,
+          respuestaBeckAnsiedad_18,
+          respuestaBeckAnsiedad_19,
+          respuestaBeckAnsiedad_20,
+          //respuestaBeckAnsiedad_21,
+        ];
+        await participanteSchema.findOneAndUpdate(
+          //Busca en la base de datos y actualiza
+          { WaNumber: Wa_Number }, //Un registro cuyo Número de WhatsApp sea igual al Número de WhatsApp con el que se está conversando actualmente
+          respuestasDelBAI //Actualiza los valores agregando el contenido de respuestas del BAI
+        );
+
+        console.log("respuestasDelBAI: ", respuestasDelBAI);
       }
     }
 

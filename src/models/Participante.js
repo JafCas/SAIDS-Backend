@@ -18,6 +18,8 @@ const participanteSchema = new Schema(
     depresionFileLink: String,
     puntuacionFiltroAnsiedad: Number,
     puntuacionFiltroDepresion: Number,
+    puntuacionCuestionarioBAI: [String],
+    puntuacionCuestionarioPHQ: [String],
   },
   {
     timestamps: true,

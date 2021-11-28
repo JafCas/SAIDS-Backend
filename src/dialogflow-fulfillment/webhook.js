@@ -127,7 +127,8 @@ webhook.post("/", express.json(), async (req, res) => {
   var intentMap = new Map();
 
   intentMap.set("webhookDemo", demo);
-  intentMap.set("nueva-prueba", testIntent);
+  // intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
+  intentMap.set("nueva-prueba", testIntent); //Probando
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
   intentMap.set("aplicar-depresion", AplicarDepresion);
   //intentMap.set("webhookDemo", testIntent);
