@@ -137,7 +137,7 @@ async function sendToDialogFlow(msg, session, params) {
         result.parameters.fields.preguntaDepresion_2.numberValue !== "" //Si el valor del campo preguntaDepresion_2 NO es vacío
       ) {
         // Ejecuta lo siguiente
-        
+
         const respuestasParticipante = {
           //Se crea un arreglo de valores que contiene lo siguiente
           //El valor de preguntaAnsiedad_1 será el valor del campo obtenido de la conversación
@@ -163,7 +163,45 @@ async function sendToDialogFlow(msg, session, params) {
           "[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: "
         );
         //}
-          
+      }
+    }
+    if (result.action === "hacer-preguntas-phq") {
+      if (
+        result.parameters.fields.respuestaPHQDepresion_3.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_4.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_5.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_6.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_7.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_8.stringValue !== "" &&
+        result.parameters.fields.respuestaPHQDepresion_9.stringValue !== ""
+      ) {
+        // const respuestasDelPHQ = {
+        let respuestaPHQDepresion_3 =
+          result.parameters.fields.respuestaPHQDepresion_3.stringValue;
+        let respuestaPHQDepresion_4 =
+          result.parameters.fields.respuestaPHQDepresion_4.stringValue;
+        let respuestaPHQDepresion_5 =
+          result.parameters.fields.respuestaPHQDepresion_5.stringValue;
+        let respuestaPHQDepresion_6 =
+          result.parameters.fields.respuestaPHQDepresion_6.stringValue;
+        let respuestaPHQDepresion_7 =
+          result.parameters.fields.respuestaPHQDepresion_7.stringValue;
+        let respuestaPHQDepresion_8 =
+          result.parameters.fields.respuestaPHQDepresion_8.stringValue;
+        let respuestaPHQDepresion_9 =
+          result.parameters.fields.respuestaPHQDepresion_9.stringValue;
+        // };
+        let respuestasDelPHQ = [
+          respuestaPHQDepresion_3,
+          respuestaPHQDepresion_4,
+          respuestaPHQDepresion_5,
+          respuestaPHQDepresion_6,
+          respuestaPHQDepresion_7,
+          respuestaPHQDepresion_8,
+          respuestaPHQDepresion_9,
+        ];
+
+        console.log("respuestasDelPHQ: ", respuestasDelPHQ );
       }
     }
 
