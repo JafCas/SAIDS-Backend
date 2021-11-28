@@ -16,6 +16,8 @@ const participanteSchema = new Schema(
     testDepresion: String,
     ansiedadFileLink: String,
     depresionFileLink: String,
+    puntuacionFiltroAnsiedad: Number,
+    puntuacionFiltroDepresion: Number,
   },
   {
     timestamps: true,

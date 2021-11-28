@@ -137,6 +137,7 @@ async function sendToDialogFlow(msg, session, params) {
         result.parameters.fields.preguntaDepresion_2.numberValue !== "" //Si el valor del campo preguntaDepresion_2 NO es vacío
       ) {
         // Ejecuta lo siguiente
+        
         const respuestasParticipante = {
           //Se crea un arreglo de valores que contiene lo siguiente
           //El valor de preguntaAnsiedad_1 será el valor del campo obtenido de la conversación
@@ -162,6 +163,7 @@ async function sendToDialogFlow(msg, session, params) {
           "[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: "
         );
         //}
+          
       }
     }
 

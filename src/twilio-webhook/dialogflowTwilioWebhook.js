@@ -10,6 +10,7 @@ const PdfPrinter = require("pdfmake");
 const fs = require("fs");
 const axios = require("axios");
 const participanteSchema = require("../models/Participante");
+const { Base64Encode } = require("base64-stream");
 
 //De AWS
 const S3 = require("aws-sdk/clients/s3");
@@ -22,6 +23,7 @@ const styles = require("./pdf/components/styles");
 const { content } = require("./pdf/components/pdfContent");
 const { sendToDialogFlow } = require("./src/dialogflow");
 const { testIntent } = require("./src/dialogflow");
+const {WebhookClient} = require('dialogflow-fulfillment');
 
 const sessionIds = new Map();
 
@@ -59,6 +61,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   console.log("[/**SESSION**/: ]", session);
   let payload = await dialogflow.sendToDialogFlow(receivedMessage, session);
   let responses = payload.fulfillmentMessages;
+  //let agent = new WebhookClient({req, res});
 
   //Recupera registros de la base de datos
   let registroParticipante = await participanteSchema.findOne({
@@ -79,7 +82,9 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaAnsiedad_2,
     preguntaDepresion_1,
     preguntaDepresion_2,
-    ansiedadFileLink;
+    ansiedadFileLink,
+    puntuacionFiltroAnsiedad,
+    puntuacionFiltroDepresion;
   //Si no existe un registro de participante que cumpla con la función anterior
   if (registroParticipante === null) {
     //Vuelve vacíos todos los valores
@@ -93,6 +98,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaDepresion_1 = "";
     preguntaDepresion_2 = "";
     ansiedadFileLink = "";
+    puntuacionFiltroAnsiedad = "";
+    puntuacionFiltroDepresion ="";
   } else {
     //Si sí existen valores con esa condición
     //Asigna los valores locales a los obtenidos por la base de datos
@@ -106,7 +113,35 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     preguntaDepresion_1 = registroParticipante.preguntaDepresion_1;
     preguntaDepresion_2 = registroParticipante.preguntaDepresion_2;
     ansiedadFileLink = registroParticipante.ansiedadFileLink;
+    puntuacionFiltroAnsiedad = registroParticipante.puntuacionFiltroAnsiedad;
+    puntuacionFiltroDepresion = registroParticipante.puntuacionFiltroDepresion;
   }
+
+  //Suma de Puntuaciones Filtro
+  let puntuacionFiltroAnsiedad_1 = parseInt(preguntaAnsiedad_1, 10);
+  let puntuacionFiltroAnsiedad_2 = parseInt(preguntaAnsiedad_2, 10);
+  puntuacionFiltroAnsiedad = puntuacionFiltroAnsiedad_1 + puntuacionFiltroAnsiedad_2;
+  let puntuacionFiltroDepresion_1 = parseInt(preguntaDepresion_1, 10);
+  let puntuacionFiltroDepresion_2 = parseInt(preguntaDepresion_2, 10);
+  puntuacionFiltroDepresion = puntuacionFiltroDepresion_1 + puntuacionFiltroDepresion_2;
+
+  //Pasa a aplicar los cuestionarios completos
+  let cuestionarioPorAplicar = "ninguno";
+
+  // if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion >= 2) {
+  //   cuestionarioPorAplicar = "ambosCuestionarios";
+  //   console.log("toma el primer valor");
+  // }
+  // if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion <= 1) {
+  //   cuestionarioPorAplicar = "ansiedadCuestionario";
+  //   console.log("toma el segundo valor");
+  // }
+  // if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion >= 2) {
+  //   cuestionarioPorAplicar = "depresionCuestionario";
+  //   console.log("toma el tercer valor");
+  // }
+  // process.env.CUESTIONARIO_POR_APLICAR = cuestionarioPorAplicar;
+
 
   //Formateo para archivo pdf
   let nombreCompletoParticipante = [nombresParticipante, apellidoParticipante];
@@ -667,8 +702,11 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     nombreCorto = nombreCorto.join("");
     console.log("[DTW] nombre archivo: ", nombreCorto);
     pdfDoc.pipe(fs.createWriteStream(nombreArchivo));
-    //let stream = fs.createReadStream(nombreArchivo);
+    
+    
     pdfDoc.end();
+    const stream = fs.createReadStream(nombreArchivo);
+    //console.log("stream: ", stream);
     process.env.NOMBRE_DEL_ARCHIVO = nombreArchivo;
 
     process.env.ID_PASADO = session;
@@ -679,7 +717,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       const params = {
         Bucket: bucketName, //Nombre del bucket, establecido en la linea 678
         Key: file, //Nombre del archivo,
-        Body: fs.createReadStream(nombreArchivo), //Contenido del archivo
+        //Body: fs.createReadStream(nombreArchivo), //Contenido del archivo\
+        Body: stream,
       };
       return storage.upload(params).promise();
     };
@@ -688,24 +727,22 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     let bucket = "test-files-node"; //Bucket de datos seleccionado
     let file = nombreCorto; //Obtenido de la comunicación con el chatbot (Número_Whatsapp.pdf)
     uploadBucket(bucket, file); //Ejecutar función || Subir archivo al bucket
-
-    //Calcular object URL
-    var fileURL = [
-      "https://",
-      bucket,
-      ".s3.",
-      process.env.AWS_REGION,
-      ".amazonaws.com/",
-      nombreCorto,
-    ];
-    fileURL = fileURL.join("");
+    const fileURL = `https://test-files-node.s3.us-east-2.amazonaws.com/${nombreCorto}`
+    let actualizacionParticipante = {
+      ansiedadFileLink: fileURL,
+      puntuacionFiltroAnsiedad: 
+        puntuacionFiltroAnsiedad,
+      puntuacionFiltroDepresion:
+        puntuacionFiltroDepresion,
+    };
     await participanteSchema.findOneAndUpdate(
       //Adición de la URL del archivo en la base de datos de MongoDB
       { WaNumber: messageComesFromPhone },
-      { ansiedadFileLink: fileURL }
+      actualizacionParticipante
     );
     console.log("URL del archivo recién cargado: ", fileURL);
   }
+
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
 });

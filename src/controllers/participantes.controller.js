@@ -22,6 +22,8 @@ participanteCtrl.createParticipante = async (req, res) => {
     testDepresion,
     ansiedadFileLink,
     depresionFileLink,
+    puntuacionFiltroAnsiedad,
+    puntuacionFiltroDepresion,
   } = req.body;
   const newParticipante = new Participante({
     WaID,
@@ -38,6 +40,8 @@ participanteCtrl.createParticipante = async (req, res) => {
     testDepresion,
     ansiedadFileLink,
     depresionFileLink,
+    puntuacionFiltroAnsiedad,
+    puntuacionFiltroDepresion,
   });
   await newParticipante.save();
   res.json({ message: "Participante Saved" });

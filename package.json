@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
     "startapp": "nodemon src/app.js",
-    "aws":"nodemon src/aws/aws-app.js"
+    "aws": "nodemon src/aws/aws-app.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "dependencies": {
     "actions-on-google": "^3.0.0",
     "axios": "^0.23.0",
+    "base64-stream": "^1.0.0",
     "cors": "^2.8.5",
     "dialogflow": "^1.2.0",
     "dialogflow-fulfillment": "^0.6.1",
