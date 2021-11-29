@@ -64,63 +64,78 @@ webhook.post("/", express.json(), async (req, res) => {
     // });
   }
 
+  let nextName = "";
+
+  if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion >= 2) {
+    cuestionarioPorAplicar = "ambosCuestionarios";
+    // cuestionarioPorAplicar = "depresionCuestionario";
+    console.log("toma el primer valor");
+    //nextName = "aplicarAmbosEvent";
+    nextName = "aplicarDepresionEvent";
+  }
+  if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion <= 1) {
+    cuestionarioPorAplicar = "ansiedadCuestionario";
+    console.log("toma el segundo valor");
+    nextName = "aplicarAnsiedadEvent";
+  }
+  if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion >= 2) {
+    cuestionarioPorAplicar = "depresionCuestionario";
+    console.log("toma el tercer valor");
+    nextName = "aplicarDepresionEvent";
+  }
+
+  let cuestionario = cuestionarioPorAplicar;
+
+  if (cuestionario === "ambosCuestionarios") {
+    console.log("[webhook] van ambos", cuestionario);
+    //nextName = "aplicarAnsiedadEvent";
+  }
+  if (cuestionario === "ansiedadCuestionario") {
+    console.log("[webhook] va ansiedad", cuestionario);
+    // intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
+  }
+  if (cuestionario === "depresionCuestionario") {
+    console.log("[webhook] va depresion", cuestionario);
+    // intentMap.set("aplicar-depresion", AplicarDepresion);
+  }
+
   function AplicarAnsiedad(agent) {
     agent.add("ansiedad confirmada");
   }
 
-  function AplicarDepresion(agent) {
-    agent.add("depresion confirmada");
-  }
-
-  let nextName = "";
-
-  if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion >= 2) {
-      cuestionarioPorAplicar = "ambosCuestionarios";
-      console.log("toma el primer valor");
-      nextName = "aplicarAmbosEvent";
+  if (cuestionario === "ambosCuestionarios") {
+    function AplicarDepresion(agent) {
+      agent.add("depresion confirmada de ambos");
+      // nextName = "aplicarAnsiedadEvent";
+      agent.setFollowupEvent({
+        name: "aplicarAnsiedadEvent",
+        parameters: { lastState: "aplicar-depresion" },
+        languageCode: "es",
+      });
     }
-    if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion <= 1) {
-      cuestionarioPorAplicar = "ansiedadCuestionario";
-      console.log("toma el segundo valor");
-      nextName = "aplicarAnsiedadEvent";
+  } else {
+    function AplicarDepresion(agent) {
+      agent.add("depresion confirmada de la sola");
     }
-    if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion >= 2) {
-      cuestionarioPorAplicar = "depresionCuestionario";
-      console.log("toma el tercer valor");
-      nextName = "aplicarDepresionEvent";
-    }
-
-  let cuestionario = cuestionarioPorAplicar;
-
-  if ((cuestionario === "ambosCuestionarios")) {
-    console.log("[webhook] van ambos", cuestionario);
-    
   }
-  if ((cuestionario === "ansiedadCuestionario")) {
-    console.log("[webhook] va ansiedad", cuestionario);
-    // intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
-    
-  }
-  if ((cuestionario === "depresionCuestionario")) {
-    console.log("[webhook] va depresion", cuestionario);
-    // intentMap.set("aplicar-depresion", AplicarDepresion);
-  }
-  
+  // function AplicarAmbos(agent) {
+  //   agent.add("Va el siguiente");
+  // }
 
   function aplicarCuestionario(agent) {
     agent.setFollowupEvent({
-      "name": "aplicarDepresionEvent",
-      "parameters": { "lastState": "nueva-prueba" },
-      "languageCode": "es",
+      name: "aplicarDepresionEvent",
+      parameters: { lastState: "nueva-prueba" },
+      languageCode: "es",
     });
   }
 
   function testIntent(agent) {
     agent.add("Test del nuevo intent");
     agent.setFollowupEvent({
-      "name": nextName,
-      "parameters": { "lastState": "nueva-prueba" },
-      "languageCode": "es",
+      name: nextName,
+      parameters: { lastState: "nueva-prueba" },
+      languageCode: "es",
     });
   }
 
@@ -131,6 +146,7 @@ webhook.post("/", express.json(), async (req, res) => {
   intentMap.set("nueva-prueba", testIntent); //Probando
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
   intentMap.set("aplicar-depresion", AplicarDepresion);
+  //if (intentE)
   //intentMap.set("webhookDemo", testIntent);
   //agent.contexts.set({ name: 'pruebaContext', lifespan: 2});
 
