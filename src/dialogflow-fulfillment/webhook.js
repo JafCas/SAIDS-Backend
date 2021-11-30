@@ -59,6 +59,8 @@ webhook.post("/", express.json(), async (req, res) => {
   puntuacionFiltroDepresion =
     puntuacionFiltroDepresion_1 + puntuacionFiltroDepresion_2;
 
+  //Intent final dinamico
+
   function demo(agent) {
     agent.add("Respuesta enviada desde el servidor webhookkk");
     // agent.context.set({ name: "pruebaContext", lifespan: 2 });
@@ -112,6 +114,11 @@ webhook.post("/", express.json(), async (req, res) => {
 
   function AplicarAnsiedad(agent) {
     agent.add("ansiedad confirmada");
+    agent.setFollowupEvent({
+      name: "activar-intent-despedida",
+      parameters: { lastState: "aplicar-ansiedad" },
+      languageCode: "es",
+    });
   }
 
   if (cuestionario === "ambosCuestionarios") {
@@ -127,18 +134,53 @@ webhook.post("/", express.json(), async (req, res) => {
   } else {
     function AplicarDepresion(agent) {
       agent.add("depresion confirmada de la sola");
+      agent.setFollowupEvent({
+        name: "activar-intent-despedida",
+        parameters: { lastState: "aplicar-depresion" },
+        languageCode: "es",
+      });
     }
   }
-  // function AplicarAmbos(agent) {
-  //   agent.add("Va el siguiente");
-  // }
+
+  let respuestaParaAnsiedad = "";
+  if ( puntuacionTotalBAI <=7 ) { //Respuesta para ansiedad minima
+    respuestaParaAnsiedad = "```Yo te veo bien, un poco de estrés en nuestro día a día es normal, pero nunca está de más poner atención a nuestros sentimientos, me alegra que estés bien, sigue así. 😉```";
+  }
+  if ( puntuacionTotalBAI >=8 && puntuacionTotalBAI <=15 ) { //Respuesta para ansiedad leve 
+    respuestaParaAnsiedad = "```Respuesta para ansiedad leve```";
+  }
+  if ( puntuacionTotalBAI >=16 && puntuacionTotalBAI <=25 ) { //Respuesta para ansiedad moderada 
+    respuestaParaAnsiedad = "```Respuesta para ansiedad moderada```";
+  }
+  if ( puntuacionTotalBAI >=26 && puntuacionTotalBAI <=63 ) { //Respuesta para ansiedad severa 
+    respuestaParaAnsiedad = "```Respuesta para ansiedad severa```";
+  }
+  
+  let respuestaParaDepresion = "";
+  if ( puntuacionTotalPHQ <=4 ) { //Respuesta para ansiedad minima
+    respuestaParaDepresion = "```respuesta para depresion minima```"
+  }
+  if ( puntuacionTotalPHQ >=5 && puntuacionTotalPHQ <=9 ) { //Respuesta para ansiedad leve 
+    respuestaParaDepresion = "```Respuesta para depresion leve```";
+  }
+  if ( puntuacionTotalPHQ >=10 && puntuacionTotalPHQ <=17 ) { //Respuesta para ansiedad leve 
+    respuestaParaDepresion = "```Respuesta para depresion moderada```";
+  }
+  if ( puntuacionTotalPHQ >=18 && puntuacionTotalPHQ <=27 ) { //Respuesta para ansiedad leve 
+    respuestaParaDepresion = "```Respuesta para depresion severa```";
+  }
+
+  let responses = [respuestaParaAnsiedad, "\nPor otra parte\n", respuestaParaDepresion];
+
+  // puntuacionTotalBAI
+  // puntuacionTotalPHQ
 
   function aplicarCuestionario(agent) {
-    agent.setFollowupEvent({
-      name: "aplicarDepresionEvent",
-      parameters: { lastState: "nueva-prueba" },
-      languageCode: "es",
-    });
+    // agent.add(responses);
+  }
+
+  function intentDespedida(agent) {
+    agent.add(responses);
   }
 
   function testIntent(agent) {
@@ -153,11 +195,11 @@ webhook.post("/", express.json(), async (req, res) => {
   var intentMap = new Map();
 
   intentMap.set("webhookDemo", demo);
-  intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
-  // intentMap.set("nueva-prueba", testIntent); //Probando
+   intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
+  //intentMap.set("nueva-prueba", testIntent); //Probando
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
   intentMap.set("aplicar-depresion", AplicarDepresion);
-  intentMap.set("webhookDemo-next", testNext);
+  intentMap.set("intent-despedida", intentDespedida);
   //if (intentE)
   //intentMap.set("webhookDemo", testIntent);
   //agent.contexts.set({ name: 'pruebaContext', lifespan: 2});

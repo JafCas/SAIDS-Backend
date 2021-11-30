@@ -650,7 +650,6 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   contadorTotalPHQ_0 + contadorTotalPHQ_1 + contadorTotalPHQ_2 + contadorTotalPHQ_3;
 
   //----------------PUNTUACIONES DEL BAI----------
-
   //Pregunta 1 del BAI
   let decorationBAI0_1 = "",
     decorationBAI1_1 = "",
@@ -660,7 +659,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     boldBAI1_1 = false,
     boldBAI2_1 = false,
     boldBAI3_1 = false;
-
+  
   //Pregunta 2 del BAI
   let decorationBAI0_2 = "",
     decorationBAI1_2 = "",
@@ -3510,7 +3509,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
   for (const response of responses) {
     // //Deshabilitar para quitar respuestas de whatsapp
-    //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
+    await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
   }
 
   //Recibe valor del intent emparejado
