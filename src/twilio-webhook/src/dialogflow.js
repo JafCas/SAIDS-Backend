@@ -51,15 +51,15 @@ async function sendToDialogFlow(msg, session, params) {
     console.log("INTENT EMPAREJADO: ", intentEmparejado);
 
     //Si el webhook al que se llegó es el deseado se ejecuta algo
-    if (intentEmparejado === "webhookDemo" || intentEmparejado === "webhookDemo-next") {
+    // if (intentEmparejado === "webhookDemo" || intentEmparejado === "webhookDemo-next" ) {
       testIntent = intentEmparejado;
       process.env.INTENT_EMPAREJADO = intentEmparejado;
       console.log("[Dialogflow] Todo bien");
       console.log("test: ", testIntent);
-    } else {
-      console.log("nada por aca");
-      process.env.INTENT_EMPAREJADO = "";
-    }
+    // } else {
+    //   console.log("nada por aca");
+    //   process.env.INTENT_EMPAREJADO = "";
+    // }
 
     let defaultResponses = [];
     if (result.action !== "input.unknown") {
@@ -224,8 +224,8 @@ async function sendToDialogFlow(msg, session, params) {
         result.parameters.fields.respuestaBeckAnsiedad_16.stringValue !== "" &&
         result.parameters.fields.respuestaBeckAnsiedad_17.stringValue !== "" &&
         result.parameters.fields.respuestaBeckAnsiedad_18.stringValue !== "" &&
-        result.parameters.fields.respuestaBeckAnsiedad_19.stringValue !== "" &&
-        result.parameters.fields.respuestaBeckAnsiedad_20.stringValue !== ""
+        result.parameters.fields.respuestaBeckAnsiedad_19.stringValue !== "" 
+        // result.parameters.fields.respuestaBeckAnsiedad_20.stringValue !== ""
         // TODO: agregar la 2da del filtro a la 21va de acá
         //result.parameters.fields.respuestaBeckAnsiedad_21.stringValue !== "" &&
       ) {
@@ -249,7 +249,7 @@ async function sendToDialogFlow(msg, session, params) {
           result.parameters.fields.respuestaBeckAnsiedad_17.stringValue,
           result.parameters.fields.respuestaBeckAnsiedad_18.stringValue,
           result.parameters.fields.respuestaBeckAnsiedad_19.stringValue,
-          result.parameters.fields.respuestaBeckAnsiedad_20.stringValue,
+          // result.parameters.fields.respuestaBeckAnsiedad_20.stringValue,
           //result.parameters.fields.respuestaBeckAnsiedad_21.stringValue;
         ];
 

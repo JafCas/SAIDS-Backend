@@ -124,7 +124,6 @@ webhook.post("/", express.json(), async (req, res) => {
   if (cuestionario === "ambosCuestionarios") {
     function AplicarDepresion(agent) {
       agent.add("depresion confirmada de ambos");
-      // nextName = "aplicarAnsiedadEvent";
       agent.setFollowupEvent({
         name: "aplicarAnsiedadEvent",
         parameters: { lastState: "aplicar-depresion" },
@@ -170,7 +169,7 @@ webhook.post("/", express.json(), async (req, res) => {
     respuestaParaDepresion = "```Respuesta para depresion severa```";
   }
 
-  let responses = [respuestaParaAnsiedad, "\nPor otra parte\n", respuestaParaDepresion];
+  let responses = [respuestaParaAnsiedad, "\n```Por otra parte```\n", respuestaParaDepresion];
 
   // puntuacionTotalBAI
   // puntuacionTotalPHQ
@@ -181,6 +180,7 @@ webhook.post("/", express.json(), async (req, res) => {
 
   function intentDespedida(agent) {
     agent.add(responses);
+    // agent.add("Despedida");
   }
 
   function testIntent(agent) {
@@ -192,14 +192,24 @@ webhook.post("/", express.json(), async (req, res) => {
     });
   }
 
+  function testParaArray(agent) {
+    agent.add("arreglado confirmado");
+    agent.setFollowupEvent({
+      name: "activar-intent-despedida",
+      parameters: { lastState: "array-test" },
+      languageCode: "es",
+    });
+  }
+
   var intentMap = new Map();
 
   intentMap.set("webhookDemo", demo);
-   intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
-  //intentMap.set("nueva-prueba", testIntent); //Probando
+  intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
+  // intentMap.set("nueva-prueba", testIntent); //Probando
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
   intentMap.set("aplicar-depresion", AplicarDepresion);
   intentMap.set("intent-despedida", intentDespedida);
+  // intentMap.set("array-test", testParaArray);
   //if (intentE)
   //intentMap.set("webhookDemo", testIntent);
   //agent.contexts.set({ name: 'pruebaContext', lifespan: 2});

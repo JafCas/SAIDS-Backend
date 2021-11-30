@@ -647,7 +647,10 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let contadorTotalPHQ_3 = contadorPHQ_3 * 3;
 
   puntuacionPHQTotal =
-  contadorTotalPHQ_0 + contadorTotalPHQ_1 + contadorTotalPHQ_2 + contadorTotalPHQ_3;
+    contadorTotalPHQ_0 +
+    contadorTotalPHQ_1 +
+    contadorTotalPHQ_2 +
+    contadorTotalPHQ_3;
 
   //----------------PUNTUACIONES DEL BAI----------
   //Pregunta 1 del BAI
@@ -659,7 +662,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     boldBAI1_1 = false,
     boldBAI2_1 = false,
     boldBAI3_1 = false;
-  
+
   //Pregunta 2 del BAI
   let decorationBAI0_2 = "",
     decorationBAI1_2 = "",
@@ -929,8 +932,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       registroParticipante.puntuacionCuestionarioBAI[17];
     puntuacionCuestionarioBAI_19 =
       registroParticipante.puntuacionCuestionarioBAI[18];
-    puntuacionCuestionarioBAI_20 =
-      registroParticipante.puntuacionCuestionarioBAI[19];
+    puntuacionCuestionarioBAI_20 = registroParticipante.preguntaAnsiedad_1;
     puntuacionCuestionarioBAI_21 = registroParticipante.preguntaAnsiedad_2;
 
     switch (puntuacionCuestionarioBAI_1) {
@@ -1422,6 +1424,32 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
   puntuacionBAITotal =
     contadorTotalBAI_1 + contadorTotalBAI_2 + contadorTotalBAI_3;
+
+  //VEREDICTOS
+
+  let veredictoBAI = "";
+  let veredictoPHQ = "";
+  if (puntuacionBAITotal <= 7) veredictoBAI = "Posible Ansiedad Mínima";
+
+  if (puntuacionBAITotal >= 8 && puntuacionBAITotal <= 15)
+    veredictoBAI = "Posible Ansiedad Leve";
+
+  if (puntuacionBAITotal >= 16 && puntuacionBAITotal <= 25)
+    veredictoBAI = "Posible Ansiedad Moderada";
+
+  if (puntuacionBAITotal >= 26 && puntuacionBAITotal <= 63)
+    veredictoBAI = "Posible Ansiedad Severa";
+
+  if (puntuacionPHQTotal <= 4) veredictoPHQ = "Posible Depresion Mínima";
+
+  if (puntuacionPHQTotal >= 5 && puntuacionPHQTotal <= 9)
+    veredictoPHQ = "Posible Depresion Leve";
+
+  if (puntuacionPHQTotal >= 10 && puntuacionPHQTotal <= 17)
+    veredictoPHQ = "Posible Depresion Moderada";
+
+  if (puntuacionPHQTotal >= 18 && puntuacionPHQTotal <= 27)
+    veredictoPHQ = "Posible Depresion Severa";
 
   //TODO: Dar formato a este archivo
   let docDefinition = {
@@ -2866,6 +2894,33 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         ],
       },
       {
+        //Suma
+        alignment: "right",
+        columns: [
+          {
+            text: "",
+            bold: true,
+            alignment: "right",
+            style: { fontSize: 11 },
+            margin: [0, 0, 0, 0],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                alignment: "right",
+                text: veredictoBAI,
+                alignment: "center",
+                bold: true,
+                style: { fontSize: 12 },
+                decoration: "",
+                margin: [0, -15, 0, 10],
+              },
+            ],
+          },
+        ],
+      },
+      {
         canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
       },
     ],
@@ -3433,6 +3488,33 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         ],
       },
       {
+        //Suma
+        alignment: "right",
+        columns: [
+          {
+            text: "",
+            bold: true,
+            alignment: "right",
+            style: { fontSize: 11 },
+            margin: [0, 0, 0, 0],
+          },
+          {
+            //Respuestas
+            columns: [
+              {
+                alignment: "right",
+                text: veredictoPHQ,
+                alignment: "center",
+                bold: true,
+                style: { fontSize: 12 },
+                decoration: "",
+                margin: [0, -15, 0, 10],
+              },
+            ],
+          },
+        ],
+      },
+      {
         canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }],
       },
       {
@@ -3541,18 +3623,13 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   }
   process.env.WA_NUMBER = messageComesFromPhone;
 
-  if (intentEmparejado === "webhookDemo-next") {
-    console.log("llega aqui");
-    let bucket = "test-files-node"; //Bucket de datos seleccionado
-    let file = `${messageComesFromPhone}.pdf`;
-    let mergedFilePathName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
-    let stream = fs.createReadStream(mergedFilePathName);
-    uploadBucket(bucket, file, stream);
-    
-  }
-
   //A partir del intent webhook
-  if (intentEmparejado === "webhookDemo") {
+  //if (intentEmparejado === "intent-despedida") {
+  //if (intentEmparejado === "webhookDemo") {
+  if (
+    puntuacionCuestionarioPHQDificil !== "" ||
+    puntuacionCuestionarioBAI_19 !== ""
+  ) {
     //CREA EL ARCHIVO PDF
     const printer = new PdfPrinter(fonts);
     const fileName = messageComesFromPhone;
@@ -3670,11 +3747,10 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       // console.log("stream: ", stream);
     }
 
-
     //Sube al bucket de S3 el archivo
     let bucket = "test-files-node"; //Bucket de datos seleccionado
     let file = nombreCorto; //Obtenido de la comunicación con el chatbot (Número_Whatsapp.pdf)
-    
+
     uploadBucket(bucket, file, stream); //Ejecutar función || Subir archivo al bucket
     // uploadBucket(bucket, file, stream); //Ejecutar función || Subir archivo al bucket x2
     const fileURL = `https://test-files-node.s3.us-east-2.amazonaws.com/${nombreCorto}`;
@@ -3684,6 +3760,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       puntuacionFiltroDepresion: puntuacionFiltroDepresion,
       puntuacionTotalBAI: puntuacionBAITotal,
       puntuacionTotalPHQ: puntuacionPHQTotal,
+      veredictoPHQ: veredictoPHQ,
+      veredictoBAI: veredictoBAI,
     };
     await participanteSchema.findOneAndUpdate(
       //Adición de la URL del archivo en la base de datos de MongoDB
@@ -3710,6 +3788,16 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     console.log("Numero total de 3: ", contadorBAI_3);
   }
 
+  if (intentEmparejado === "intent-despedida") {
+    // if (intentEmparejado === "webhookDemo-next") {
+    console.log("llega aqui");
+    let bucket = "test-files-node"; //Bucket de datos seleccionado
+    let file = `${messageComesFromPhone}.pdf`;
+    let mergedFilePathName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
+    let stream = fs.createReadStream(mergedFilePathName);
+    uploadBucket(bucket, file, stream);
+  }
+
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
 });
 
@@ -3734,8 +3822,7 @@ const uploadBucket = (bucketName, file, stream) => {
   };
   console.log("subido al bucket");
   return storage.upload(params).promise();
-  
-}
+};
 
 console.log("[dialogflowTwilioWebhook] Twilio Webhook Workin'");
 
