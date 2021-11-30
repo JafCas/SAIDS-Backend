@@ -264,15 +264,17 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       break;
   }
 
+  //-------------PUNTUACIONES DEL PHQ-------------
+
   //SI la puntuacion de las preguntas filtro del BAI son mayores a 1
   if (puntuacionFiltroAnsiedad >= 2) {
     puntuacionCuestionarioBAI = registroParticipante.puntuacionCuestionarioBAI;
   }
 
   //SI la puntuacion de las preguntas filtro del PHQ son mayores a 1
-  if (puntuacionFiltroDepresion >= 2) {
-    puntuacionCuestionarioPHQ = registroParticipante.puntuacionCuestionarioPHQ;
-  }
+  // if (puntuacionFiltroDepresion >= 2) {
+  //   puntuacionCuestionarioPHQ = registroParticipante.puntuacionCuestionarioPHQ;
+  // }
 
   //Pregunta 1 del PHQ9
   let decorationPHQ0_1 = "",
@@ -392,7 +394,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let puntuacionCuestionarioPHQ_8 = "";
   let puntuacionCuestionarioPHQ_9 = "";
   let puntuacionCuestionarioPHQDificil = "";
-  if (puntuacionFiltroAnsiedad >= 1) {
+  if (puntuacionFiltroDepresion >= 2) {
     puntuacionCuestionarioPHQ = registroParticipante.puntuacionCuestionarioPHQ;
     puntuacionCuestionarioPHQ_1 = registroParticipante.preguntaDepresion_1;
     puntuacionCuestionarioPHQ_2 = registroParticipante.preguntaDepresion_2;
@@ -639,12 +641,788 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         break;
     }
   }
+  let contadorTotalPHQ_0 = contadorPHQ_0 * 0;
   let contadorTotalPHQ_1 = contadorPHQ_1 * 1;
   let contadorTotalPHQ_2 = contadorPHQ_2 * 2;
   let contadorTotalPHQ_3 = contadorPHQ_3 * 3;
 
   puntuacionPHQTotal =
-    contadorTotalPHQ_1 + contadorTotalPHQ_2 + contadorTotalPHQ_3;
+  contadorTotalPHQ_0 + contadorTotalPHQ_1 + contadorTotalPHQ_2 + contadorTotalPHQ_3;
+
+  //----------------PUNTUACIONES DEL BAI----------
+
+  //Pregunta 1 del BAI
+  let decorationBAI0_1 = "",
+    decorationBAI1_1 = "",
+    decorationBAI2_1 = "",
+    decorationBAI3_1 = "";
+  let boldBAI0_1 = false,
+    boldBAI1_1 = false,
+    boldBAI2_1 = false,
+    boldBAI3_1 = false;
+
+  //Pregunta 2 del BAI
+  let decorationBAI0_2 = "",
+    decorationBAI1_2 = "",
+    decorationBAI2_2 = "",
+    decorationBAI3_2 = "";
+  let boldBAI0_2 = false,
+    boldBAI1_2 = false,
+    boldBAI2_2 = false,
+    boldBAI3_2 = false;
+
+  //Pregunta 3 del BAI
+  let decorationBAI0_3 = "",
+    decorationBAI1_3 = "",
+    decorationBAI2_3 = "",
+    decorationBAI3_3 = "";
+  let boldBAI0_3 = false,
+    boldBAI1_3 = false,
+    boldBAI2_3 = false,
+    boldBAI3_3 = false;
+
+  //Pregunta 4 del BAI
+  let decorationBAI0_4 = "",
+    decorationBAI1_4 = "",
+    decorationBAI2_4 = "",
+    decorationBAI3_4 = "";
+  let boldBAI0_4 = false,
+    boldBAI1_4 = false,
+    boldBAI2_4 = false,
+    boldBAI3_4 = false;
+
+  //Pregunta 5 del BAI
+  let decorationBAI0_5 = "",
+    decorationBAI1_5 = "",
+    decorationBAI2_5 = "",
+    decorationBAI3_5 = "";
+  let boldBAI0_5 = false,
+    boldBAI1_5 = false,
+    boldBAI2_5 = false,
+    boldBAI3_5 = false;
+
+  //Pregunta 6 del BAI
+  let decorationBAI0_6 = "",
+    decorationBAI1_6 = "",
+    decorationBAI2_6 = "",
+    decorationBAI3_6 = "";
+  let boldBAI0_6 = false,
+    boldBAI1_6 = false,
+    boldBAI2_6 = false,
+    boldBAI3_6 = false;
+
+  //Pregunta 7 del BAI
+  let decorationBAI0_7 = "",
+    decorationBAI1_7 = "",
+    decorationBAI2_7 = "",
+    decorationBAI3_7 = "";
+  let boldBAI0_7 = false,
+    boldBAI1_7 = false,
+    boldBAI2_7 = false,
+    boldBAI3_7 = false;
+
+  //Pregunta 8 del BAI
+  let decorationBAI0_8 = "",
+    decorationBAI1_8 = "",
+    decorationBAI2_8 = "",
+    decorationBAI3_8 = "";
+  let boldBAI0_8 = false,
+    boldBAI1_8 = false,
+    boldBAI2_8 = false,
+    boldBAI3_8 = false;
+
+  //Pregunta 9 del BAI
+  let decorationBAI0_9 = "",
+    decorationBAI1_9 = "",
+    decorationBAI2_9 = "",
+    decorationBAI3_9 = "";
+  let boldBAI0_9 = false,
+    boldBAI1_9 = false,
+    boldBAI2_9 = false,
+    boldBAI3_9 = false;
+
+  //Pregunta 10 del BAI
+  let decorationBAI0_10 = "",
+    decorationBAI1_10 = "",
+    decorationBAI2_10 = "",
+    decorationBAI3_10 = "";
+  let boldBAI0_10 = false,
+    boldBAI1_10 = false,
+    boldBAI2_10 = false,
+    boldBAI3_10 = false;
+
+  //Pregunta 11 del BAI
+  let decorationBAI0_11 = "",
+    decorationBAI1_11 = "",
+    decorationBAI2_11 = "",
+    decorationBAI3_11 = "";
+  let boldBAI0_11 = false,
+    boldBAI1_11 = false,
+    boldBAI2_11 = false,
+    boldBAI3_11 = false;
+
+  //Pregunta 12 del BAI
+  let decorationBAI0_12 = "",
+    decorationBAI1_12 = "",
+    decorationBAI2_12 = "",
+    decorationBAI3_12 = "";
+  let boldBAI0_12 = false,
+    boldBAI1_12 = false,
+    boldBAI2_12 = false,
+    boldBAI3_12 = false;
+
+  //Pregunta 13 del BAI
+  let decorationBAI0_13 = "",
+    decorationBAI1_13 = "",
+    decorationBAI2_13 = "",
+    decorationBAI3_13 = "";
+  let boldBAI0_13 = false,
+    boldBAI1_13 = false,
+    boldBAI2_13 = false,
+    boldBAI3_13 = false;
+
+  //Pregunta 14 del BAI
+  let decorationBAI0_14 = "",
+    decorationBAI1_14 = "",
+    decorationBAI2_14 = "",
+    decorationBAI3_14 = "";
+  let boldBAI0_14 = false,
+    boldBAI1_14 = false,
+    boldBAI2_14 = false,
+    boldBAI3_14 = false;
+
+  //Pregunta 15 del BAI
+  let decorationBAI0_15 = "",
+    decorationBAI1_15 = "",
+    decorationBAI2_15 = "",
+    decorationBAI3_15 = "";
+  let boldBAI0_15 = false,
+    boldBAI1_15 = false,
+    boldBAI2_15 = false,
+    boldBAI3_15 = false;
+
+  //Pregunta 16 del BAI
+  let decorationBAI0_16 = "",
+    decorationBAI1_16 = "",
+    decorationBAI2_16 = "",
+    decorationBAI3_16 = "";
+  let boldBAI0_16 = false,
+    boldBAI1_16 = false,
+    boldBAI2_16 = false,
+    boldBAI3_16 = false;
+
+  //Pregunta 17 del BAI
+  let decorationBAI0_17 = "",
+    decorationBAI1_17 = "",
+    decorationBAI2_17 = "",
+    decorationBAI3_17 = "";
+  let boldBAI0_17 = false,
+    boldBAI1_17 = false,
+    boldBAI2_17 = false,
+    boldBAI3_17 = false;
+
+  //Pregunta 18 del BAI
+  let decorationBAI0_18 = "",
+    decorationBAI1_18 = "",
+    decorationBAI2_18 = "",
+    decorationBAI3_18 = "";
+  let boldBAI0_18 = false,
+    boldBAI1_18 = false,
+    boldBAI2_18 = false,
+    boldBAI3_18 = false;
+
+  //Pregunta 19 del BAI
+  let decorationBAI0_19 = "",
+    decorationBAI1_19 = "",
+    decorationBAI2_19 = "",
+    decorationBAI3_19 = "";
+  let boldBAI0_19 = false,
+    boldBAI1_19 = false,
+    boldBAI2_19 = false,
+    boldBAI3_19 = false;
+
+  //Pregunta 20 del BAI
+  let decorationBAI0_20 = "",
+    decorationBAI1_20 = "",
+    decorationBAI2_20 = "",
+    decorationBAI3_20 = "";
+  let boldBAI0_20 = false,
+    boldBAI1_20 = false,
+    boldBAI2_20 = false,
+    boldBAI3_20 = false;
+
+  //Pregunta 21 del BAI
+  let decorationBAI0_21 = "",
+    decorationBAI1_21 = "",
+    decorationBAI2_21 = "",
+    decorationBAI3_21 = "";
+  let boldBAI0_21 = false,
+    boldBAI1_21 = false,
+    boldBAI2_21 = false,
+    boldBAI3_21 = false;
+
+  //Contador para cada puntuacion
+  let contadorBAI_0 = 0;
+  let contadorBAI_1 = 0;
+  let contadorBAI_2 = 0;
+  let contadorBAI_3 = 0;
+
+  let puntuacionBAITotal = 0;
+
+  let puntuacionCuestionarioBAI_1 = "";
+  let puntuacionCuestionarioBAI_2 = "";
+  let puntuacionCuestionarioBAI_3 = "";
+  let puntuacionCuestionarioBAI_4 = "";
+  let puntuacionCuestionarioBAI_5 = "";
+  let puntuacionCuestionarioBAI_6 = "";
+  let puntuacionCuestionarioBAI_7 = "";
+  let puntuacionCuestionarioBAI_8 = "";
+  let puntuacionCuestionarioBAI_9 = "";
+  let puntuacionCuestionarioBAI_10 = "";
+  let puntuacionCuestionarioBAI_11 = "";
+  let puntuacionCuestionarioBAI_12 = "";
+  let puntuacionCuestionarioBAI_13 = "";
+  let puntuacionCuestionarioBAI_14 = "";
+  let puntuacionCuestionarioBAI_15 = "";
+  let puntuacionCuestionarioBAI_16 = "";
+  let puntuacionCuestionarioBAI_17 = "";
+  let puntuacionCuestionarioBAI_18 = "";
+  let puntuacionCuestionarioBAI_19 = "";
+  let puntuacionCuestionarioBAI_20 = "";
+  let puntuacionCuestionarioBAI_21 = "";
+  if (puntuacionFiltroAnsiedad >= 2) {
+    puntuacionCuestionarioBAI = registroParticipante.puntuacionCuestionarioBAI;
+    puntuacionCuestionarioBAI_1 =
+      registroParticipante.puntuacionCuestionarioBAI[0];
+    puntuacionCuestionarioBAI_2 =
+      registroParticipante.puntuacionCuestionarioBAI[1];
+    puntuacionCuestionarioBAI_3 =
+      registroParticipante.puntuacionCuestionarioBAI[2];
+    puntuacionCuestionarioBAI_4 =
+      registroParticipante.puntuacionCuestionarioBAI[3];
+    puntuacionCuestionarioBAI_5 =
+      registroParticipante.puntuacionCuestionarioBAI[4];
+    puntuacionCuestionarioBAI_6 =
+      registroParticipante.puntuacionCuestionarioBAI[5];
+    puntuacionCuestionarioBAI_7 =
+      registroParticipante.puntuacionCuestionarioBAI[6];
+    puntuacionCuestionarioBAI_8 =
+      registroParticipante.puntuacionCuestionarioBAI[7];
+    puntuacionCuestionarioBAI_9 =
+      registroParticipante.puntuacionCuestionarioBAI[8];
+    puntuacionCuestionarioBAI_10 =
+      registroParticipante.puntuacionCuestionarioBAI[9];
+    puntuacionCuestionarioBAI_11 =
+      registroParticipante.puntuacionCuestionarioBAI[10];
+    puntuacionCuestionarioBAI_12 =
+      registroParticipante.puntuacionCuestionarioBAI[11];
+    puntuacionCuestionarioBAI_13 =
+      registroParticipante.puntuacionCuestionarioBAI[12];
+    puntuacionCuestionarioBAI_14 =
+      registroParticipante.puntuacionCuestionarioBAI[13];
+    puntuacionCuestionarioBAI_15 =
+      registroParticipante.puntuacionCuestionarioBAI[14];
+    puntuacionCuestionarioBAI_16 =
+      registroParticipante.puntuacionCuestionarioBAI[15];
+    puntuacionCuestionarioBAI_17 =
+      registroParticipante.puntuacionCuestionarioBAI[16];
+    puntuacionCuestionarioBAI_18 =
+      registroParticipante.puntuacionCuestionarioBAI[17];
+    puntuacionCuestionarioBAI_19 =
+      registroParticipante.puntuacionCuestionarioBAI[18];
+    puntuacionCuestionarioBAI_20 =
+      registroParticipante.puntuacionCuestionarioBAI[19];
+    puntuacionCuestionarioBAI_21 = registroParticipante.preguntaAnsiedad_2;
+
+    switch (puntuacionCuestionarioBAI_1) {
+      case "0":
+        decorationBAI0_1 = "underline";
+        boldBAI0_1 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_1 = "underline";
+        boldBAI1_1 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_1 = "underline";
+        boldBAI2_1 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_1 = "underline";
+        boldBAI3_1 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_2) {
+      case "0":
+        decorationBAI0_2 = "underline";
+        boldBAI0_2 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_2 = "underline";
+        boldBAI1_2 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_2 = "underline";
+        boldBAI2_2 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_2 = "underline";
+        boldBAI3_2 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_3) {
+      case "0":
+        decorationBAI0_3 = "underline";
+        boldBAI0_3 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_3 = "underline";
+        boldBAI1_3 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_3 = "underline";
+        boldBAI2_3 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_3 = "underline";
+        boldBAI3_3 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_4) {
+      case "0":
+        decorationBAI0_4 = "underline";
+        boldBAI0_4 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_4 = "underline";
+        boldBAI1_4 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_4 = "underline";
+        boldBAI2_4 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_4 = "underline";
+        boldBAI3_4 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_5) {
+      case "0":
+        decorationBAI0_5 = "underline";
+        boldBAI0_5 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_5 = "underline";
+        boldBAI1_5 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_5 = "underline";
+        boldBAI2_5 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_5 = "underline";
+        boldBAI3_5 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_6) {
+      case "0":
+        decorationBAI0_6 = "underline";
+        boldBAI0_6 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_6 = "underline";
+        boldBAI1_6 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_6 = "underline";
+        boldBAI2_6 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_6 = "underline";
+        boldBAI3_6 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_7) {
+      case "0":
+        decorationBAI0_7 = "underline";
+        boldBAI0_7 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_7 = "underline";
+        boldBAI1_7 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_7 = "underline";
+        boldBAI2_7 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_7 = "underline";
+        boldBAI3_7 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_8) {
+      case "0":
+        decorationBAI0_8 = "underline";
+        boldBAI0_8 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_8 = "underline";
+        boldBAI1_8 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_8 = "underline";
+        boldBAI2_8 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_8 = "underline";
+        boldBAI3_8 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_9) {
+      case "0":
+        decorationBAI0_9 = "underline";
+        boldBAI0_9 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_9 = "underline";
+        boldBAI1_9 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_9 = "underline";
+        boldBAI2_9 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_9 = "underline";
+        boldBAI3_9 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_10) {
+      case "0":
+        decorationBAI0_10 = "underline";
+        boldBAI0_10 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_10 = "underline";
+        boldBAI1_10 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_10 = "underline";
+        boldBAI2_10 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_10 = "underline";
+        boldBAI3_10 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_11) {
+      case "0":
+        decorationBAI0_11 = "underline";
+        boldBAI0_11 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_11 = "underline";
+        boldBAI1_11 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_11 = "underline";
+        boldBAI2_11 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_11 = "underline";
+        boldBAI3_11 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_12) {
+      case "0":
+        decorationBAI0_12 = "underline";
+        boldBAI0_12 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_12 = "underline";
+        boldBAI1_12 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_12 = "underline";
+        boldBAI2_12 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_12 = "underline";
+        boldBAI3_12 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_13) {
+      case "0":
+        decorationBAI0_13 = "underline";
+        boldBAI0_13 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_13 = "underline";
+        boldBAI1_13 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_13 = "underline";
+        boldBAI2_13 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_13 = "underline";
+        boldBAI3_13 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_14) {
+      case "0":
+        decorationBAI0_14 = "underline";
+        boldBAI0_14 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_14 = "underline";
+        boldBAI1_14 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_14 = "underline";
+        boldBAI2_14 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_14 = "underline";
+        boldBAI3_14 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_15) {
+      case "0":
+        decorationBAI0_15 = "underline";
+        boldBAI0_15 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_15 = "underline";
+        boldBAI1_15 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_15 = "underline";
+        boldBAI2_15 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_15 = "underline";
+        boldBAI3_15 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_16) {
+      case "0":
+        decorationBAI0_16 = "underline";
+        boldBAI0_16 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_16 = "underline";
+        boldBAI1_16 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_16 = "underline";
+        boldBAI2_16 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_16 = "underline";
+        boldBAI3_16 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_17) {
+      case "0":
+        decorationBAI0_17 = "underline";
+        boldBAI0_17 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_17 = "underline";
+        boldBAI1_17 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_17 = "underline";
+        boldBAI2_17 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_17 = "underline";
+        boldBAI3_17 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_18) {
+      case "0":
+        decorationBAI0_18 = "underline";
+        boldBAI0_18 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_18 = "underline";
+        boldBAI1_18 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_18 = "underline";
+        boldBAI2_18 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_18 = "underline";
+        boldBAI3_18 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_19) {
+      case "0":
+        decorationBAI0_19 = "underline";
+        boldBAI0_19 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_19 = "underline";
+        boldBAI1_19 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_19 = "underline";
+        boldBAI2_19 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_19 = "underline";
+        boldBAI3_19 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_20) {
+      case "0":
+        decorationBAI0_20 = "underline";
+        boldBAI0_20 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_20 = "underline";
+        boldBAI1_20 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_20 = "underline";
+        boldBAI2_20 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_20 = "underline";
+        boldBAI3_20 = true;
+        contadorBAI_3++;
+        break;
+    }
+
+    switch (puntuacionCuestionarioBAI_21) {
+      case "0":
+        decorationBAI0_21 = "underline";
+        boldBAI0_21 = true;
+        contadorBAI_0++;
+        break;
+      case "1":
+        decorationBAI1_21 = "underline";
+        boldBAI1_21 = true;
+        contadorBAI_1++;
+        break;
+      case "2":
+        decorationBAI2_21 = "underline";
+        boldBAI2_21 = true;
+        contadorBAI_2++;
+        break;
+      case "3":
+        decorationBAI3_21 = "underline";
+        boldBAI3_21 = true;
+        contadorBAI_3++;
+        break;
+    }
+  }
+  let contadorTotalBAI_1 = contadorBAI_1 * 1;
+  let contadorTotalBAI_2 = contadorBAI_2 * 2;
+  let contadorTotalBAI_3 = contadorBAI_3 * 3;
+
+  puntuacionBAITotal =
+    contadorTotalBAI_1 + contadorTotalBAI_2 + contadorTotalBAI_3;
 
   //TODO: Dar formato a este archivo
   let docDefinition = {
@@ -1087,26 +1865,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_1,
+                decoration: decorationBAI0_1,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_1,
+                decoration: decorationBAI1_1,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_1,
+                decoration: decorationBAI2_1,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_1,
+                decoration: decorationBAI3_1,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1131,26 +1909,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_2,
+                decoration: decorationBAI0_2,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_2,
+                decoration: decorationBAI1_2,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_2,
+                decoration: decorationBAI2_2,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_2,
+                decoration: decorationBAI3_2,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1175,26 +1953,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_3,
+                decoration: decorationBAI0_3,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_3,
+                decoration: decorationBAI1_3,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_3,
+                decoration: decorationBAI2_3,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_3,
+                decoration: decorationBAI3_3,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1219,26 +1997,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_4,
+                decoration: decorationBAI0_4,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_4,
+                decoration: decorationBAI1_4,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_4,
+                decoration: decorationBAI2_4,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_4,
+                decoration: decorationBAI3_4,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1263,26 +2041,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_5,
+                decoration: decorationBAI0_5,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_5,
+                decoration: decorationBAI1_5,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_5,
+                decoration: decorationBAI2_5,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_5,
+                decoration: decorationBAI3_5,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1307,26 +2085,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_6,
+                decoration: decorationBAI0_6,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_6,
+                decoration: decorationBAI1_6,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_6,
+                decoration: decorationBAI2_6,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_6,
+                decoration: decorationBAI3_6,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1351,26 +2129,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_7,
+                decoration: decorationBAI0_7,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_7,
+                decoration: decorationBAI1_7,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_7,
+                decoration: decorationBAI2_7,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_7,
+                decoration: decorationBAI3_7,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1395,26 +2173,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_8,
+                decoration: decorationBAI0_8,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_8,
+                decoration: decorationBAI1_8,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_8,
+                decoration: decorationBAI2_8,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_8,
+                decoration: decorationBAI3_8,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1439,26 +2217,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_9,
+                decoration: decorationBAI0_9,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_9,
+                decoration: decorationBAI1_9,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_9,
+                decoration: decorationBAI2_9,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_9,
+                decoration: decorationBAI3_9,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1483,26 +2261,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_10,
+                decoration: decorationBAI0_10,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_10,
+                decoration: decorationBAI1_10,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_10,
+                decoration: decorationBAI2_10,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_10,
+                decoration: decorationBAI3_10,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1527,26 +2305,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_11,
+                decoration: decorationBAI0_11,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_11,
+                decoration: decorationBAI1_11,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_11,
+                decoration: decorationBAI2_11,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_11,
+                decoration: decorationBAI3_11,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1571,26 +2349,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_12,
+                decoration: decorationBAI0_12,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_12,
+                decoration: decorationBAI1_12,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_12,
+                decoration: decorationBAI2_12,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_12,
+                decoration: decorationBAI3_12,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1615,26 +2393,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_13,
+                decoration: decorationBAI0_13,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_13,
+                decoration: decorationBAI1_13,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_13,
+                decoration: decorationBAI2_13,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_13,
+                decoration: decorationBAI3_13,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1659,26 +2437,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_14,
+                decoration: decorationBAI0_14,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_14,
+                decoration: decorationBAI1_14,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_14,
+                decoration: decorationBAI2_14,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_14,
+                decoration: decorationBAI3_14,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1703,26 +2481,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_15,
+                decoration: decorationBAI0_15,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_15,
+                decoration: decorationBAI1_15,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_15,
+                decoration: decorationBAI2_15,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_15,
+                decoration: decorationBAI3_15,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1747,26 +2525,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_16,
+                decoration: decorationBAI0_16,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_16,
+                decoration: decorationBAI1_16,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_16,
+                decoration: decorationBAI2_16,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_16,
+                decoration: decorationBAI3_16,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1791,26 +2569,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_17,
+                decoration: decorationBAI0_17,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_17,
+                decoration: decorationBAI1_17,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_17,
+                decoration: decorationBAI2_17,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_17,
+                decoration: decorationBAI3_17,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1835,26 +2613,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_18,
+                decoration: decorationBAI0_18,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_18,
+                decoration: decorationBAI1_18,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_18,
+                decoration: decorationBAI2_18,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_18,
+                decoration: decorationBAI3_18,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1880,26 +2658,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_19,
+                decoration: decorationBAI0_19,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_19,
+                decoration: decorationBAI1_19,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_19,
+                decoration: decorationBAI2_19,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_19,
+                decoration: decorationBAI3_19,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1924,26 +2702,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_20,
+                decoration: decorationBAI0_20,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_20,
+                decoration: decorationBAI1_20,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_20,
+                decoration: decorationBAI2_20,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_20,
+                decoration: decorationBAI3_20,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -1968,26 +2746,26 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 text: "0",
-                bold: true,
-                decoration: "underline",
+                bold: boldBAI0_21,
+                decoration: decorationBAI0_21,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "1",
-                bold: false,
-                decoration: "",
+                bold: boldBAI1_21,
+                decoration: decorationBAI1_21,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "2",
-                bold: false,
-                decoration: "",
+                bold: boldBAI2_21,
+                decoration: decorationBAI2_21,
                 margin: [0, 7, 0, 7],
               },
               {
                 text: "3",
-                bold: false,
-                decoration: "",
+                bold: boldBAI3_21,
+                decoration: decorationBAI3_21,
                 margin: [0, 7, 0, 7],
               },
             ],
@@ -2013,7 +2791,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 alignment: "right",
-                text: "0",
+                text: contadorBAI_0,
                 bold: true,
                 //decoration: "underline",
                 margin: [0, 10, -9, 0],
@@ -2025,7 +2803,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
                 margin: [-20, 10, -32, 0],
               },
               {
-                text: "1",
+                text: contadorBAI_1,
                 bold: true,
                 //decoration: "",
                 margin: [0, 10, -9, 0],
@@ -2037,7 +2815,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
                 margin: [-35, 10, -35, 0],
               },
               {
-                text: "2",
+                text: contadorBAI_2,
                 bold: true,
                 //decoration: "",
                 margin: [-9, 10, 0, 0],
@@ -2049,7 +2827,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
                 margin: [-50, 10, -35, 0],
               },
               {
-                text: "3",
+                text: contadorBAI_3,
                 bold: true,
                 //decoration: "",
                 margin: [-29, 10, 0, 0],
@@ -2077,7 +2855,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
             columns: [
               {
                 alignment: "right",
-                text: "26",
+                text: puntuacionBAITotal,
                 alignment: "center",
                 bold: true,
                 style: { fontSize: 14 },
@@ -2731,11 +3509,12 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   };
 
   for (const response of responses) {
-    await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
+    // //Deshabilitar para quitar respuestas de whatsapp
+    //await twilio.sendTextMessage(req.body.WaId, response.text.text[0]);
   }
 
   //Recibe valor del intent emparejado
-  var intentEmparejado = process.env.INTENT_EMPAREJADO;
+  let intentEmparejado = process.env.INTENT_EMPAREJADO;
   console.log(
     "[dialogflowTwilioWebhook] Intent que se ve desde DTW: ",
     intentEmparejado
@@ -2763,6 +3542,16 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   }
   process.env.WA_NUMBER = messageComesFromPhone;
 
+  if (intentEmparejado === "webhookDemo-next") {
+    console.log("llega aqui");
+    let bucket = "test-files-node"; //Bucket de datos seleccionado
+    let file = `${messageComesFromPhone}.pdf`;
+    let mergedFilePathName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
+    let stream = fs.createReadStream(mergedFilePathName);
+    uploadBucket(bucket, file, stream);
+    
+  }
+
   //A partir del intent webhook
   if (intentEmparejado === "webhookDemo") {
     //CREA EL ARCHIVO PDF
@@ -2779,6 +3568,11 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     pdfDoc.end();
     let stream;
     let mergedFilePathName;
+
+    // fileMergedName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
+    //   pdfDoc = printer.createPdfKitDocument(docDefinition);
+    //   pdfDoc.pipe(fs.createWriteStream(fileMergedName));
+    //   pdfDoc.end();
 
     //PDF ANSIEDAD
     let fileAnsiedadName;
@@ -2877,35 +3671,20 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       // console.log("stream: ", stream);
     }
 
-    //console.log("stream: ", stream);
-    const uploadBucket = (bucketName, file) => {
-      //let stream = fs.createReadStream(nombreArchivo);
-      const params = {
-        Bucket: bucketName, //Nombre del bucket, establecido en la linea 678
-        Key: file, //Nombre del archivo,
-        //Body: fs.createReadStream(nombreArchivo), //Contenido del archivo\
-        Body: stream,
-      };
-      return storage.upload(params).promise();
-    };
 
     //Sube al bucket de S3 el archivo
     let bucket = "test-files-node"; //Bucket de datos seleccionado
     let file = nombreCorto; //Obtenido de la comunicación con el chatbot (Número_Whatsapp.pdf)
-    // if (puntuacionFiltroDepresion <= 1 && puntuacionFiltroAnsiedad <= 1) {
-    //   file = nombreCorto;
-    //   uploadBucket(bucket, file); //Ejecutar función || Subir archivo al bucket
-    // }
-    // if (puntuacionFiltroDepresion >= 2 && puntuacionFiltroAnsiedad <= 1) {
-    //   file = mergedFileName;
-    //   uploadBucket(bucket, file); //Ejecutar función || Subir archivo al bucket
-    // }
-    uploadBucket(bucket, file); //Ejecutar función || Subir archivo al bucket
+    
+    uploadBucket(bucket, file, stream); //Ejecutar función || Subir archivo al bucket
+    // uploadBucket(bucket, file, stream); //Ejecutar función || Subir archivo al bucket x2
     const fileURL = `https://test-files-node.s3.us-east-2.amazonaws.com/${nombreCorto}`;
     let actualizacionParticipante = {
       ansiedadFileLink: fileURL,
       puntuacionFiltroAnsiedad: puntuacionFiltroAnsiedad,
       puntuacionFiltroDepresion: puntuacionFiltroDepresion,
+      puntuacionTotalBAI: puntuacionBAITotal,
+      puntuacionTotalPHQ: puntuacionPHQTotal,
     };
     await participanteSchema.findOneAndUpdate(
       //Adición de la URL del archivo en la base de datos de MongoDB
@@ -2921,6 +3700,15 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     console.log("Numero total de 1: ", contadorPHQ_1);
     console.log("Numero total de 2: ", contadorPHQ_2);
     console.log("Numero total de 3: ", contadorPHQ_3);
+    //ansioso
+    console.log(
+      "Esto contiene el arreglo ansioso: ",
+      puntuacionCuestionarioBAI
+    );
+    console.log("Numero total de 0: ", contadorBAI_0);
+    console.log("Numero total de 1: ", contadorBAI_1);
+    console.log("Numero total de 2: ", contadorBAI_2);
+    console.log("Numero total de 3: ", contadorBAI_3);
   }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });
@@ -2935,6 +3723,21 @@ async function setSessionAndUser(senderId) {
     throw error;
   }
 }
+
+//console.log("stream: ", stream);
+const uploadBucket = (bucketName, file, stream) => {
+  //let stream = fs.createReadStream(nombreArchivo);
+  const params = {
+    Bucket: bucketName, //Nombre del bucket, establecido en la linea 678
+    Key: file, //Nombre del archivo,
+    //Body: fs.createReadStream(nombreArchivo), //Contenido del archivo\
+    Body: stream,
+  };
+  console.log("subido al bucket");
+  return storage.upload(params).promise();
+  
+}
+
 console.log("[dialogflowTwilioWebhook] Twilio Webhook Workin'");
 
 module.exports = dialogflowTwilioWebhook;

@@ -51,7 +51,7 @@ async function sendToDialogFlow(msg, session, params) {
     console.log("INTENT EMPAREJADO: ", intentEmparejado);
 
     //Si el webhook al que se llegó es el deseado se ejecuta algo
-    if (intentEmparejado === "webhookDemo") {
+    if (intentEmparejado === "webhookDemo" || intentEmparejado === "webhookDemo-next") {
       testIntent = intentEmparejado;
       process.env.INTENT_EMPAREJADO = intentEmparejado;
       console.log("[Dialogflow] Todo bien");
@@ -199,6 +199,7 @@ async function sendToDialogFlow(msg, session, params) {
           { WaNumber: Wa_Number }, //Un registro cuyo Número de WhatsApp sea igual al Número de WhatsApp con el que se está conversando actualmente
           arregloDeRespuestas //Actualiza los valores agregando el contenido de respuestas del PHQ
         );
+        console.log("respuestasDelPHQ: ", arregloDeRespuestas);
       }
     }
 

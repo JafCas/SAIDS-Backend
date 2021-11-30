@@ -26,6 +26,8 @@ participanteCtrl.createParticipante = async (req, res) => {
     puntuacionFiltroDepresion,
     puntuacionCuestionarioBAI,
     puntuacionCuestionarioPHQ,
+    puntuacionTotalBAI,
+    puntuacionTotalPHQ,
   } = req.body;
   const newParticipante = new Participante({
     WaID,

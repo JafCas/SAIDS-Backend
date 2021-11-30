@@ -26,7 +26,9 @@ webhook.post("/", express.json(), async (req, res) => {
     preguntaDepresion_1,
     preguntaDepresion_2,
     puntuacionFiltroAnsiedad,
-    puntuacionFiltroDepresion;
+    puntuacionFiltroDepresion,
+    puntuacionTotalBAI,
+    puntuacionTotalPHQ;
 
   if (registroParticipante === null) {
     preguntaAnsiedad_1 = "";
@@ -35,6 +37,8 @@ webhook.post("/", express.json(), async (req, res) => {
     preguntaDepresion_2 = "";
     puntuacionFiltroAnsiedad = "";
     puntuacionFiltroDepresion = "";
+    puntuacionTotalBAI = "";
+    puntuacionTotalPHQ = "";
   } else {
     preguntaAnsiedad_1 = registroParticipante.preguntaAnsiedad_1;
     preguntaAnsiedad_2 = registroParticipante.preguntaAnsiedad_2;
@@ -42,6 +46,8 @@ webhook.post("/", express.json(), async (req, res) => {
     preguntaDepresion_2 = registroParticipante.preguntaDepresion_2;
     puntuacionFiltroAnsiedad = registroParticipante.puntuacionFiltroAnsiedad;
     puntuacionFiltroDepresion = registroParticipante.puntuacionFiltroDepresion;
+    puntuacionTotalBAI = registroParticipante.puntuacionTotalBAI;
+    puntuacionTotalPHQ = registroParticipante.puntuacionTotalPHQ;
   }
 
   let puntuacionFiltroAnsiedad_1 = parseInt(preguntaAnsiedad_1, 10);
@@ -64,8 +70,13 @@ webhook.post("/", express.json(), async (req, res) => {
     // });
   }
 
+  function testNext(agent) {
+    agent.add("Test del next intent");
+  }
+
   let nextName = "";
 
+  //------Toma de intent dependiendo de preguntas filtro------
   if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion >= 2) {
     cuestionarioPorAplicar = "ambosCuestionarios";
     // cuestionarioPorAplicar = "depresionCuestionario";
@@ -142,10 +153,11 @@ webhook.post("/", express.json(), async (req, res) => {
   var intentMap = new Map();
 
   intentMap.set("webhookDemo", demo);
-  // intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
-  intentMap.set("nueva-prueba", testIntent); //Probando
+  intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
+  // intentMap.set("nueva-prueba", testIntent); //Probando
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
   intentMap.set("aplicar-depresion", AplicarDepresion);
+  intentMap.set("webhookDemo-next", testNext);
   //if (intentE)
   //intentMap.set("webhookDemo", testIntent);
   //agent.contexts.set({ name: 'pruebaContext', lifespan: 2});

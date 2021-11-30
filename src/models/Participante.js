@@ -20,6 +20,8 @@ const participanteSchema = new Schema(
     puntuacionFiltroDepresion: Number,
     puntuacionCuestionarioBAI: [String],
     puntuacionCuestionarioPHQ: [String],
+    puntuacionTotalBAI: Number,
+    puntuacionTotalPHQ: Number,
   },
   {
     timestamps: true,
