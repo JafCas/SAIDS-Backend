@@ -267,9 +267,9 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   //-------------PUNTUACIONES DEL PHQ-------------
 
   //SI la puntuacion de las preguntas filtro del BAI son mayores a 1
-  if (puntuacionFiltroAnsiedad >= 2) {
-    puntuacionCuestionarioBAI = registroParticipante.puntuacionCuestionarioBAI;
-  }
+  // if (puntuacionFiltroAnsiedad >= 2) {
+  //   puntuacionCuestionarioBAI = registroParticipante.puntuacionCuestionarioBAI;
+  // }
 
   //SI la puntuacion de las preguntas filtro del PHQ son mayores a 1
   // if (puntuacionFiltroDepresion >= 2) {
