@@ -2,20 +2,6 @@ const express = require("express");
 const webhook = express();
 const dfff = require("dialogflow-fulfillment");
 const participanteSchema = require("../models/Participante");
-const { Router } = require("express");
-const router = Router();
-
-const {
-  getParticipantes,
-  createParticipante,
-  getAParticipante,
-  updateParticipante,
-  deleteParticipante,
-} = require("../controllers/participantes.controller");
-
-  router.route("/").get(getParticipantes);//.post(createRecord);
-
-  router.route("/:id").get(getAParticipante).put(updateParticipante).delete(deleteParticipante);
 
 webhook.get("/", (req, res) => {
   res.send("El servidor del webhook está vivo");
