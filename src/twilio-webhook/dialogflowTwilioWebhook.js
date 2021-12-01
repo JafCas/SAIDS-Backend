@@ -3799,6 +3799,15 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     let mergedFilePathName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
     let stream = fs.createReadStream(mergedFilePathName);
     uploadBucket(bucket, file, stream);
+    const checadoPorEspecialista = false;
+    let actualizacionParticipante = {
+      checadoPorEspecialista: checadoPorEspecialista,
+    };
+    await participanteSchema.findOneAndUpdate(
+      //Adición de la URL del archivo en la base de datos de MongoDB
+      { WaNumber: messageComesFromPhone },
+      actualizacionParticipante
+    );
   }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });

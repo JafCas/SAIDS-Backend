@@ -25,6 +25,7 @@ const participanteSchema = new Schema(
     veredictoBAI: String,
     veredictoPHQ: String,
     fechaParticipacionOnly: String,
+    checadoPorEspecialista: Boolean,
   },
   {
     timestamps: true,

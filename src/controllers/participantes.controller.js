@@ -79,20 +79,22 @@ participanteCtrl.updateParticipante = async (req, res) => {
     testDepresion,
     ansiedadFileLink,
     depresionFileLink,
+    checadoPorEspecialista,
   } = req.body;
   await Participante.findOneAndUpdate(
     { _id: req.params.id },
     {
-      nombresParticipante,
-      apellidoParticipante,
-      edadParticipante,
-      emailParticipante,
-      respuestasFiltroAnsiedad,
-      respuestasFiltroDepresion,
-      testAnsiedad,
-      testDepresion,
-      ansiedadFileLink,
-      depresionFileLink,
+      // nombresParticipante,
+      // apellidoParticipante,
+      // edadParticipante,
+      // emailParticipante,
+      // respuestasFiltroAnsiedad,
+      // respuestasFiltroDepresion,
+      // testAnsiedad,
+      // testDepresion,
+      // ansiedadFileLink,
+      // depresionFileLink,
+      checadoPorEspecialista,
     }
   );
   res.json({ message: "Participante Updated" });
