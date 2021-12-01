@@ -24,6 +24,7 @@ const participanteSchema = new Schema(
     puntuacionTotalPHQ: Number,
     veredictoBAI: String,
     veredictoPHQ: String,
+    fechaParticipacionOnly: String,
   },
   {
     timestamps: true,

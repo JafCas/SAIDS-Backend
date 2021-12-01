@@ -30,6 +30,7 @@ participanteCtrl.createParticipante = async (req, res) => {
     puntuacionTotalPHQ,
     veredictoBAI,
     veredictoPHQ,
+    fechaParticipacionOnly,
   } = req.body;
   const newParticipante = new Participante({
     WaID,
@@ -54,6 +55,7 @@ participanteCtrl.createParticipante = async (req, res) => {
     puntuacionTotalPHQ,
     veredictoBAI,
     veredictoPHQ,
+    fechaParticipacionOnly,
   });
   await newParticipante.save();
   res.json({ message: "Participante Saved" });
@@ -64,6 +66,7 @@ participanteCtrl.getAParticipante = async (req, res) => {
   res.json(participante);
 };
 
+//Desde aqui se declara para la interaccion con la base de datos desde el frontend
 participanteCtrl.updateParticipante = async (req, res) => {
   const {
     nombresParticipante,
@@ -93,6 +96,11 @@ participanteCtrl.updateParticipante = async (req, res) => {
     }
   );
   res.json({ message: "Participante Updated" });
+};
+
+participanteCtrl.deleteParticipante = async (req, res) => {
+  await Record.findByIdAndDelete(req.params.id);
+  res.json({ message: "Participante Deleted" });
 };
 
 module.exports = participanteCtrl;

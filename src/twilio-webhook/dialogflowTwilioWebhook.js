@@ -132,6 +132,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   ];
   nombreEdadParticipante = nombreEdadParticipante.join("\n");
   let fechaParticipacionOnly = "";
+  let fechaParticipacionCorta = "";
   if (fechaParticipacion !== "") {
     fechaParticipacionOnly =
       (fechaParticipacion.getDate() > 9
@@ -143,6 +144,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
         : "0" + (fechaParticipacion.getMonth() + 1)) +
       "/" +
       fechaParticipacion.getFullYear();
+      fechaParticipacionCorta = fechaParticipacionOnly;
   }
   fechaParticipacionOnly = [
     "\nFecha de participación:",
@@ -3762,6 +3764,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       puntuacionTotalPHQ: puntuacionPHQTotal,
       veredictoPHQ: veredictoPHQ,
       veredictoBAI: veredictoBAI,
+      fechaParticipacionOnly: fechaParticipacionCorta,
     };
     await participanteSchema.findOneAndUpdate(
       //Adición de la URL del archivo en la base de datos de MongoDB
