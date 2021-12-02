@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const { engine } = require("express-handlebars");
+// const { engine } = require("express-handlebars");
 const fileUpload = require("express-fileupload");
 
 class Server {
@@ -10,7 +10,7 @@ class Server {
     this.app = express();
     this.port = process.env.AWS_PORT || "5303";
 
-    this.setTemplateEngine();
+    //this.setTemplateEngine();
 
     this.middlewares();
 
@@ -18,19 +18,19 @@ class Server {
 
   }
 
-  setTemplateEngine() {
-    this.app.set("views", "./src/aws/views");
-    this.app.set("view engine", "handlebars");
+  // setTemplateEngine() {
+  //   this.app.set("views", "./src/aws/views");
+  //   this.app.set("view engine", "handlebars");
 
-    this.app.engine(
-      "handlebars",
-      engine({
-        extname: ".hbs",
-        defaultLayout: "main",
-        layoutsDir: "",
-      })
-    );
-  }
+  //   this.app.engine(
+  //     "handlebars",
+  //     engine({
+  //       extname: ".hbs",
+  //       defaultLayout: "main",
+  //       layoutsDir: "",
+  //     })
+  //   );
+  // }
 
   middlewares() {
     this.app.use(express.static("./src/aws/public"));
