@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const exphbs = require("express-handlebars");
+const { engine } = require("express-handlebars");
 const fileUpload = require("express-fileupload");
 
 class Server {
@@ -20,13 +20,13 @@ class Server {
 
   setTemplateEngine() {
     this.app.set("views", "./src/aws/views");
-    this.app.set("view engine", "hbs");
+    this.app.set("view engine", "handlebars");
 
     this.app.engine(
-      "hbs",
-      exphbs({
-        extname: "hbs",
-        defaultLayout: "",
+      "handlebars",
+      engine({
+        extname: ".hbs",
+        defaultLayout: "main",
         layoutsDir: "",
       })
     );
