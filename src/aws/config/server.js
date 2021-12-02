@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 // const { engine } = require("express-handlebars");
-const fileUpload = require("express-fileupload");
+//const fileUpload = require("express-fileupload");
 
 class Server {
 
@@ -36,13 +36,13 @@ class Server {
     this.app.use(express.static("./src/aws/public"));
     this.app.use(express.json());
 
-    this.app.use(
-      fileUpload({
-        useTempFiles: true,
-        tempFileDir: "/tmp/",
-        debug: true,
-      })
-    );
+    // this.app.use(
+    //   fileUpload({
+    //     useTempFiles: true,
+    //     tempFileDir: "/tmp/",
+    //     debug: true,
+    //   })
+    // );
   }
 
   routes() {
