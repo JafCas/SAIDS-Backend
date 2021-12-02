@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
+    "start": "nodemon src/index.js",
     "startapp": "nodemon src/app.js",
     "aws": "nodemon src/aws/aws-app.js"
+    
   },
   "repository": {
     "type": "git",
