@@ -169,7 +169,7 @@ webhook.post("/", express.json(), async (req, res) => {
     respuestaParaDepresion = "```Respuesta para depresion severa```";
   }
 
-  let responses = [respuestaParaAnsiedad, "\n```Por otra parte```\n", respuestaParaDepresion];
+  let responses = [respuestaParaAnsiedad, respuestaParaDepresion, "```Un especialista se pondra en contacto contigo pronto (Solo si eres de la UPIITA, y si me aprueban el PT)```"];
 
   // puntuacionTotalBAI
   // puntuacionTotalPHQ
