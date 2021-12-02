@@ -121,8 +121,6 @@ async function sendToDialogFlow(msg, session, params) {
             WaNumber: Wa_Number,
           });
         }
-        await axios.post("https://saids-backend.herokuapp.com/api/participantes" , newParticipante);
-        // await axios.post("http://localhost:4001/api/participantes" , newParticipante);
         console.log("[/**MANDADOS A LA DATABASE**/]: ");
       }
     }
