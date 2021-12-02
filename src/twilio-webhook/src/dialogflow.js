@@ -115,14 +115,14 @@ async function sendToDialogFlow(msg, session, params) {
           console.log("[Dialogflow] /**ACTUALIZADO**/: ");
         } else {
           console.log("[Dialogflow] /**NO EXISTIA PERO YA LO CREÉ**/: ");
-          await axios.post(`${process.env.ACCESS_URI}/api/participantes`, {
-          // await axios.post("http://localhost:4000/api/participantes", {
+          // await axios.post("https://saids-backend.herokuapp.com/api/participantes", {
+          await axios.post("http://localhost:4001/api/participantes", {
             WaID: WaID,
             WaNumber: Wa_Number,
           });
         }
-        await axios.post(`${process.env.ACCESS_URI}/api/participantes` , newParticipante);
-        //await axios.post("http://localhost:4000/api/participantes" , newParticipante);
+        // await axios.post("https://saids-backend.herokuapp.com/api/participantes" , newParticipante);
+        await axios.post("http://localhost:4001/api/participantes" , newParticipante);
         console.log("[/**MANDADOS A LA DATABASE**/]: ");
       }
     }
