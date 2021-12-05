@@ -96,6 +96,11 @@ webhook.post("/", express.json(), async (req, res) => {
     console.log("toma el tercer valor");
     nextName = "aplicarDepresionEvent";
   }
+  if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion <= 1) {
+    cuestionarioPorAplicar = "Ninguno";
+    console.log("Toma el cuarto valor");
+    nextName = "activar-intent-despedida";
+}
 
   let cuestionario = cuestionarioPorAplicar;
 
@@ -110,6 +115,9 @@ webhook.post("/", express.json(), async (req, res) => {
   if (cuestionario === "depresionCuestionario") {
     console.log("[webhook] va depresion", cuestionario);
     // intentMap.set("aplicar-depresion", AplicarDepresion);
+  }
+  if (cuestionario === "Ninguno") {
+    console.log("[webhook] no va ninguno porque no hay...", cuestionario);
   }
 
   function AplicarAnsiedad(agent) {

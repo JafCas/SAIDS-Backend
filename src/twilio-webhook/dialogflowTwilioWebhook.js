@@ -396,7 +396,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let puntuacionCuestionarioPHQ_8 = "";
   let puntuacionCuestionarioPHQ_9 = "";
   let puntuacionCuestionarioPHQDificil = "";
-  if (puntuacionFiltroDepresion >= 2) {
+  if (puntuacionFiltroDepresion >= 0) {
     puntuacionCuestionarioPHQ = registroParticipante.puntuacionCuestionarioPHQ;
     puntuacionCuestionarioPHQ_1 = registroParticipante.preguntaDepresion_1;
     puntuacionCuestionarioPHQ_2 = registroParticipante.preguntaDepresion_2;
@@ -894,7 +894,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let puntuacionCuestionarioBAI_19 = "";
   let puntuacionCuestionarioBAI_20 = "";
   let puntuacionCuestionarioBAI_21 = "";
-  if (puntuacionFiltroAnsiedad >= 2) {
+  if (puntuacionFiltroAnsiedad >= 0) {
     puntuacionCuestionarioBAI = registroParticipante.puntuacionCuestionarioBAI;
     puntuacionCuestionarioBAI_1 =
       registroParticipante.puntuacionCuestionarioBAI[0];
@@ -3610,8 +3610,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
   if (yaExiste === null) {
     //Si no existe un registro con este numero, se crea uno nuevo
-    await axios.post("https://saids-backend.herokuapp.com/api/participantes", {
-    // await axios.post("http://localhost:4001/api/participantes", {
+    await axios.post("https://saids-upiita.com/api/participantes", {
+    // await axios.post("http://localhost:4000/api/participantes", {
       WaID: session,
       WaNumber: messageComesFromPhone,
       ansiedadFileLink: ansiedadFileLink,
