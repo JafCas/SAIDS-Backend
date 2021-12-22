@@ -115,8 +115,8 @@ async function sendToDialogFlow(msg, session, params) {
           console.log("[Dialogflow] /**ACTUALIZADO**/: ");
         } else {
           console.log("[Dialogflow] /**NO EXISTIA PERO YA LO CREÉ**/: ");
-          await axios.post("https://saids-upiita.com/api/participantes", {
-          // await axios.post("http://localhost:4000/api/participantes", {
+          // await axios.post("https://saids-upiita.com/api/participantes", {
+          await axios.post("http://localhost:4000/api/participantes", {
             WaID: WaID,
             WaNumber: Wa_Number,
           });
@@ -152,7 +152,6 @@ async function sendToDialogFlow(msg, session, params) {
           preguntaDepresion_2:
             result.parameters.fields.preguntaDepresion_2.stringValue,
         };
-        //if (yaExiste !== null) {
         await participanteSchema.findOneAndUpdate(
           //Busca en la base de datos y actualiza
           { WaNumber: Wa_Number }, //Un registro cuyo Número de WhatsApp sea igual al Número de WhatsApp con el que se está conversando actualmente
@@ -161,7 +160,6 @@ async function sendToDialogFlow(msg, session, params) {
         console.log(
           "[Dialogflow] /**ACTUALIZADOS REGISTROS DE RESPUESTAS**/: "
         );
-        //}
       }
     }
     //Intencion encargada de aplicar Patience Health Questionnarie

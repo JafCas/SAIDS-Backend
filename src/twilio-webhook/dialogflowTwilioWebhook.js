@@ -1457,7 +1457,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
   let docDefinition = {
     content: [
       {
-        text: nombreEdadParticipante,
+        text: nombreEdadParticipante, //Este textp cambia dinámicamente
         style: "header",
         margin: [100, 50, 0, 20],
       },
@@ -3610,8 +3610,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
   if (yaExiste === null) {
     //Si no existe un registro con este numero, se crea uno nuevo
-    await axios.post("https://saids-upiita.com/api/participantes", {
-    // await axios.post("http://localhost:4000/api/participantes", {
+    // await axios.post("https://saids-upiita.com/api/participantes", {
+    await axios.post("http://localhost:4000/api/participantes", {
       WaID: session,
       WaNumber: messageComesFromPhone,
       ansiedadFileLink: ansiedadFileLink,
@@ -3634,10 +3634,14 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     puntuacionCuestionarioBAI_19 !== ""
   ) {
     //CREA EL ARCHIVO PDF
-    const printer = new PdfPrinter(fonts);
-    const fileName = messageComesFromPhone;
-    //console.log("[dialogflowTwilioWebhook] nombre archivo: ", fileName);
+    //Declara la impresión de un documento PDF
+    const printer = new PdfPrinter(fonts); 
+    //El nombre de este archivo será el número de WhatsApp del participante en turno
+    const fileName = messageComesFromPhone; 
+    //Genera un documento PDF a partir de la declaración del documento
     let pdfDoc = printer.createPdfKitDocument(docDefinition);
+
+
     let nombreArchivo = "./createdFiles/" + fileName + ".pdf";
     let nombreCorto = [fileName, ".pdf"];
     nombreCorto = nombreCorto.join("");
@@ -3648,10 +3652,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     let stream;
     let mergedFilePathName;
 
-    // fileMergedName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
-    //   pdfDoc = printer.createPdfKitDocument(docDefinition);
-    //   pdfDoc.pipe(fs.createWriteStream(fileMergedName));
-    //   pdfDoc.end();
+
 
     //PDF ANSIEDAD
     let fileAnsiedadName;
@@ -3709,8 +3710,11 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
     //PDF AMBAS
     let fileAnsiedadFirstName;
     let fileAmbasName;
+    //Si la puntuación de las preguntas filtro apunta a la aplicación de ambos cuestionarios
     if (puntuacionFiltroDepresion >= 2 && puntuacionFiltroAnsiedad >= 2) {
       const printerAnsiedadFirst = new PdfPrinter(fonts);
+      //Genera un documento PDF que, como nombre, lleve el número de whatsapp del participante, 
+      //seguido del texto AnsiedadFirst
       fileAnsiedadFirstName = `./createdFiles/${messageComesFromPhone}AnsiedadFirst.pdf`;
       let pdfDocAnsiedadFirst =
         printerAnsiedadFirst.createPdfKitDocument(ansiedadDefinition);
@@ -3718,6 +3722,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       pdfDocAnsiedadFirst.end();
 
       //building el segundo
+      //A continuación, genera el segundo documento pdf, el cual lleva como número de WhatsApp,
+      //Seguido del texto DepresionSecond
       const printerDepresionSecond = new PdfPrinter(fonts);
       fileAmbasName = `./createdFiles/${messageComesFromPhone}DepresionSecond.pdf`;
       let pdfDocDepresionSecond =
@@ -3727,6 +3733,8 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
 
       //merge de todo
       mergedFilePathName = `./createdFiles/${messageComesFromPhone}merged.pdf`;
+      //Por último, realiza la fusión de estos tres documentos en un nuevo documento que lleva por nombre
+      //El número de whatsApp, seguido del texto merged
       merge(
         [nombreArchivo, fileAnsiedadFirstName, fileAmbasName],
         mergedFilePathName,
@@ -3809,6 +3817,7 @@ dialogflowTwilioWebhook.post("/", async function (req, res) {
       { WaNumber: messageComesFromPhone },
       actualizacionParticipante
     );
+    console.log("Lo dificil", puntuacionCuestionarioPHQDificil);
   }
 
   res.status(200).json({ ok: true, msg: "Mensaje enviado correctamente" });

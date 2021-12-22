@@ -79,24 +79,24 @@ webhook.post("/", express.json(), async (req, res) => {
   let nextName = "";
 
   //------Toma de intent dependiendo de preguntas filtro------
-  if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion >= 2) {
+  if (puntuacionFiltroAnsiedad >= 3 && puntuacionFiltroDepresion >= 3) {
     cuestionarioPorAplicar = "ambosCuestionarios";
     // cuestionarioPorAplicar = "depresionCuestionario";
     console.log("toma el primer valor");
     //nextName = "aplicarAmbosEvent";
     nextName = "aplicarDepresionEvent";
   }
-  if (puntuacionFiltroAnsiedad >= 2 && puntuacionFiltroDepresion <= 1) {
+  if (puntuacionFiltroAnsiedad >= 3 && puntuacionFiltroDepresion <= 2) {
     cuestionarioPorAplicar = "ansiedadCuestionario";
     console.log("toma el segundo valor");
     nextName = "aplicarAnsiedadEvent";
   }
-  if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion >= 2) {
+  if (puntuacionFiltroAnsiedad <= 2 && puntuacionFiltroDepresion >= 3) {
     cuestionarioPorAplicar = "depresionCuestionario";
     console.log("toma el tercer valor");
     nextName = "aplicarDepresionEvent";
   }
-  if (puntuacionFiltroAnsiedad <= 1 && puntuacionFiltroDepresion <= 1) {
+  if (puntuacionFiltroAnsiedad <= 3 && puntuacionFiltroDepresion <= 2) {
     cuestionarioPorAplicar = "Ninguno";
     console.log("Toma el cuarto valor");
     nextName = "activar-intent-despedida";
@@ -120,12 +120,15 @@ webhook.post("/", express.json(), async (req, res) => {
     console.log("[webhook] no va ninguno porque no hay...", cuestionario);
   }
 
-  function AplicarAnsiedad(agent) {
-    agent.add("ansiedad confirmada");
+  //Nombre de la función, cuyo parámetro de entrada es el agente
+  function AplicarAnsiedad(agent) { 
+    //Mensaje que se agregará en caso de que no se ejecuten los siguientes métodos
+    agent.add("ansiedad confirmada"); 
+    //A partir de esta función, se continuará con el siguiente evento, el cual activará otra intención
     agent.setFollowupEvent({
-      name: "activar-intent-despedida",
-      parameters: { lastState: "aplicar-ansiedad" },
-      languageCode: "es",
+      name: "activar-intent-despedida", //Nombre del evento a ejecutar
+      parameters: { lastState: "aplicar-ansiedad" }, //Último estado (intención actual)
+      languageCode: "es", //Idioma del agente
     });
   }
 
@@ -214,7 +217,11 @@ webhook.post("/", express.json(), async (req, res) => {
   intentMap.set("webhookDemo", demo);
   intentMap.set("proseguir-cuestionarios", testIntent); // Siguiendo el flujo conversacional
   // intentMap.set("nueva-prueba", testIntent); //Probando
+
+  //Para la intención "aplicar-ansiedad" ejecuta la función dinámica AplicarAnsiedad
   intentMap.set("aplicar-ansiedad", AplicarAnsiedad);
+
+  
   intentMap.set("aplicar-depresion", AplicarDepresion);
   intentMap.set("intent-despedida", intentDespedida);
   // intentMap.set("array-test", testParaArray);
